@@ -33,4 +33,9 @@ public class util {
 		String url = "'jdbc:mysql://master:3306/sqoop_schema?user=root&password=root'";
 		return url;
 	}
+	
+	public static String getLogPath(){
+		String path = Object.class.getClassLoader().getResource("").getPath()+"/"+Constants.LOG_DIR;
+		return path;
+	}
 }

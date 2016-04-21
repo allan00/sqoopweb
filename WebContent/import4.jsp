@@ -52,11 +52,13 @@ String message = request.getParameter("message");
     <%@include file="/left.jsp"%>
     <div id="bodyColumn">
       <div id="contentBox">
+      <h3>新建导入作业</h3>
       <center>
+      <form action="<%=path %>/jobExec" method="post">
        <label><strong>导入源选项：</strong></label></br></br></br>
-       <label>数据库类型：</label><select><option value="Mysql" id="DBType" name="DBType">Mysql</option></br></br>
-       <option value="Oracle">Oracle</option>
-       <option value="DB2">DB2</option></select></br></br>
+       <label>数据库类型：</label><select id="DBType" name="DBType"><option value="mysql" id="DBType" name="DBType">Mysql</option></br></br>
+       <option value="oracle">Oracle</option>
+       <option value="db2">DB2</option></select></br></br>
        <label>主机ip:</label><input type="text" id=“hostIp” name="hostIp"/></br></br>
        <label>端口号：</label><input type="text" id=“port” name="port"/></br></br>
 		<label>用户名：</label><input type="text" id="DBUser" name="DBUser"/></br></br>
@@ -71,10 +73,12 @@ String message = request.getParameter("message");
 		<label>行分隔符：</label><input type="text" id="rowSplit" name="rowSplit"/></br></br>
 		<label><strong>其他</strong></label></br></br></br>
 		<label>是否增量导入：</label><input type="radio" name="isIncremental" value="0" checked="checked" />否 
-		<label><input type="radio" name="isIncremental" value="1" />是 </br></br>
-		<label><input type="button" value="执行"/>&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="radio" name="isIncremental" value="1" />是 </br></br>
+		<input type="submit" value="执行"/>&nbsp;&nbsp;&nbsp;&nbsp;</br></br>
+		<label>作业名称：</label>
+		<input type="text" id="jobName" name="jobName"/>
 		<input type="button" value="保存到系统"/></br>
-		
+		</form>
 		</center>
        </div>
     </div>

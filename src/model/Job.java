@@ -10,6 +10,7 @@ public class Job {
 	private String mrID;
 	private String logFileName;
 	private int state;
+	private String logContent;
 	public int getId() {
 		return id;
 	}
@@ -51,5 +52,11 @@ public class Job {
 	}
 	public void setState(int state) {
 		this.state = state;
+	}
+	public String getLogContent() {
+		return logContent;
+	}
+	public void setLogContent(String logContent) {
+		this.logContent = logContent;
 	}
 }

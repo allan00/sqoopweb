@@ -10,6 +10,22 @@
 		<servlet-name>savedJobList</servlet-name>
 		<url-pattern>/savedJobList</url-pattern>
 	</servlet-mapping>
+	 <servlet>
+		<servlet-name>execSavedJob</servlet-name>
+		<servlet-class>servlet.execSavedJobServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>execSavedJob</servlet-name>
+		<url-pattern>/execSavedJob</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>jobExecDetail</servlet-name>
+		<servlet-class>servlet.jobExecDetailServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>jobExecDetail</servlet-name>
+		<url-pattern>/jobExecDetail</url-pattern>
+	</servlet-mapping>
 	<servlet>
 		<servlet-name>runningJobList</servlet-name>
 		<servlet-class>servlet.runningJobListServlet</servlet-class>

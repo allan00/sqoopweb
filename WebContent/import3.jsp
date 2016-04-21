@@ -71,9 +71,9 @@ String message = request.getParameter("message");
 		<label>行分隔符：</label><input type="text" id="rowSplit" name="rowSplit"/></br></br>
 		<label><strong>其他</strong></label></br></br></br>
 		<label>是否增量导入：</label><input type="radio" name="isIncremental" value="0" checked="checked" />否 
-		<label><input type="radio" name="isIncremental" value="1" />是 </br></br>
-		<label><input type="button" value="执行"/>&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="button" value="保存到系统"/></br>
+		<input type="radio" name="isIncremental" value="1" />是 </br></br>
+		<input type="button" value="执行"/>&nbsp;&nbsp;&nbsp;&nbsp;
+		<label>作业名称</label><input type="text" id="jobName" name="jobName"/>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="保存到系统"/></br>
 		
 		</center>
        </div>

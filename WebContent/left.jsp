@@ -25,7 +25,7 @@ String basePath1 = request.getScheme()+"://"+request.getServerName()+":"+request
                   <h5>新建作业</h5>
                   <ul>
                   <li class="none">
-                  <a href="<%=path1 %>/import1.jsp">导入</a>
+                  <a href="<%=path1 %>/import4.jsp">导入</a>
             </li>
             <li class="none">
                   <a href="<%=path1 %>/export1.jsp">导出</a>
