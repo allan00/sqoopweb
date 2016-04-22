@@ -76,7 +76,7 @@ public class jobHistoryListServlet extends HttpServlet {
 				o.setId(rs.getInt("id"));
 				o.setJobName(rs.getString("jobName"));
 				o.setStartTime(rs.getTimestamp("startTime"));
-				o.setEndTime(rs.getTimestamp("startTime"));
+				o.setEndTime(rs.getTimestamp("endTime"));
 				o.setMrID(rs.getString("mrID"));
 				o.setLogFileName(rs.getString("logFileName"));
 				o.setState(rs.getInt("state"));

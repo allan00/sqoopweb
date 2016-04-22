@@ -34,9 +34,9 @@ import java.sql.SQLException;
 import java.sql.Statement;  
 import java.sql.Timestamp;
 
-public class jobExecServlet extends HttpServlet {
+public class RuntimeExampleServlet extends HttpServlet {
 
-	public jobExecServlet() {
+	public RuntimeExampleServlet() {
 		super();
 	}
 
@@ -61,21 +61,24 @@ public class jobExecServlet extends HttpServlet {
 	} 
 	
 	public void exec(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
-		String jobName = util.returnDate()+"job";
-		String logFileName = jobName+".log";
-		String sqoopCMD = parseCMD(request,response);
-		String[] cmd = {"/bin/sh","-c",sqoopCMD+" >"+request.getRealPath("")+Constants.LOG_DIR+"/"+logFileName+" 2>&1"};
+		String jobName = request.getParameter("id");
+		if(jobName==null || jobName.equals("")){
+			request.getRequestDispatcher("/runningJobList").forward(request, response);
+			return;
+		}
+		
 		PreparedStatement ps = null;
 		Connection con = null;
 		ResultSet rs = null;
 		long generate_id = 0;
 		Timestamp startTime = new Timestamp(System.currentTimeMillis());
-		
+		String name = util.returnDate()+"systemjob-"+jobName;
+		String logFileName = name+".log";
 		try {
 			con = JdbcUtil.getConn();
 			String sql = "insert into SQOOP_JOB(jobName,startTime,logFileName,state) values(?,?,?,?)";
 			ps = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
-			ps.setString(1, jobName);
+			ps.setString(1, name);
 			ps.setTimestamp(2, startTime);
 			ps.setString(3, logFileName);
 			ps.setInt(4, 0); 
@@ -92,17 +95,39 @@ public class jobExecServlet extends HttpServlet {
 			JdbcUtil.close(rs, ps);
 		}
 		request.getRequestDispatcher("/runningJobList").forward(request, response);
-		
+		String sqoopCMD = "sqoop job --meta-connect "+util.getMetaURL()+" --exec "+jobName;
+		String[] cmd = {"/bin/sh","-c",sqoopCMD+" >"+request.getRealPath("")+Constants.LOG_DIR+"/"+logFileName+" 2>&1 &"};
+//		String [] cmd={"/bin/sh","-c","sqoop job --list"};
 		Process p = null;
+		OutputStream os = null;
+		BufferedReader br = null;
+		InputStreamReader isr = null;
+		InputStream is = null;
 		Runtime rt = Runtime.getRuntime();
 		int exitValue = 1;
 		try {
-			String logDir = request.getRealPath("")+Constants.LOG_DIR;
+			p = rt.exec(cmd);
+			is = p.getErrorStream();
+			if (is == null) {
+				exitValue = 1;
+			}
+			isr = new InputStreamReader(is);
+			String logDir = request.getRealPath("/joblog/");
 			File logpath = new File(logDir);
 			if (!logpath.exists()) {
 				logpath.mkdirs();
 			}
-			p = rt.exec(cmd);
+			File logFile = new File(logDir+ File.separator+logFileName);
+			os = new FileOutputStream(logFile);
+			br = new BufferedReader(isr);
+			String line = "";
+//			System.out.println(new File("test").getAbsolutePath());
+			while ((line = br.readLine()) != null) {
+				os.write(line.getBytes());
+				os.write("\n".getBytes());
+				System.out.println(line);
+			}
+			
 			exitValue = p.waitFor();
 			p.destroy();
 			
@@ -113,6 +138,11 @@ public class jobExecServlet extends HttpServlet {
 			e1.printStackTrace();
 		}
 		finally{
+			br.close();
+			isr.close();
+			is.close();
+			os.flush();
+			os.close();
 		}
 		
 		Timestamp endTime = new Timestamp(System.currentTimeMillis());
@@ -134,24 +164,6 @@ public class jobExecServlet extends HttpServlet {
 		}
 		
 		return;
-	}
-
-	private String parseCMD(HttpServletRequest request, HttpServletResponse response) {
-		String cmd = "";
-		String DBType = request.getParameter("DBType");
-		String hostIp = request.getParameter("hostIp");
-		String port = request.getParameter("port");
-		String DBUser = request.getParameter("DBUser");
-		String DBPassword = request.getParameter("DBPassword");
-		String schema = request.getParameter("schema");
-		String tableName = request.getParameter("tableName");
-		String where = request.getParameter("where");
-		String target = request.getParameter("target");
-		String columnSplit = request.getParameter("columnSplit");
-		String rowSplit = request.getParameter("rowSplit");
-		int isIncremental = Integer.valueOf(request.getParameter("isIncremental"));
-		cmd =String.format("sqoop import --direct  --connect jdbc:%s://%s:%s/%s --username %s --password %s --table %s ", DBType,hostIp,port,schema,DBUser,DBPassword,tableName);
-		return cmd;
 	}
 
 	/**

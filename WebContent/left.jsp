@@ -28,13 +28,13 @@ String basePath1 = request.getScheme()+"://"+request.getServerName()+":"+request
                   <a href="<%=path1 %>/import4.jsp">导入</a>
             </li>
             <li class="none">
-                  <a href="<%=path1 %>/export1.jsp">导出</a>
+                  <a href="<%=path1 %>/export4.jsp">导出</a>
             </li>
             <li class="none">
-                  <a href="<%=path1 %>/rdbms.jsp">RDBMS迁移</a>
+                  <a href="<%=path1 %>/rdbms4.jsp">RDBMS数据迁移</a>
             </li>
             <li class="none">
-                  <a href="<%=path1 %>/hdfs.jsp">hdfs数据迁移</a>
+                  <a href="<%=path1 %>/hdfs4.jsp">hdfs数据迁移</a>
             </li>
           </ul>
                   <h5>作业状态</h5>

@@ -1,6 +1,10 @@
 package util;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class util {
 	public static String returnDate() {
@@ -37,5 +41,38 @@ public class util {
 	public static String getLogPath(){
 		String path = Object.class.getClassLoader().getResource("").getPath()+"/"+Constants.LOG_DIR;
 		return path;
+	}
+
+	//当作业成功时返回1，作业失败时返回2
+	//logFile中若含有completed successfully，则作业执行成功
+	public static int parseIsSuccess(File logFile){
+		FileReader in = null;
+		BufferedReader br = null;
+		try {
+			in = new FileReader(logFile);
+			br = new BufferedReader(in);
+			String line;
+			while((line=br.readLine())!=null){
+				if(line.contains("completed successfully"))
+					return 1;
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		finally{
+			try {
+				in.close();
+				br.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		return 2;
 	}
 }

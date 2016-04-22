@@ -96,7 +96,7 @@ public class execSavedJobServlet extends HttpServlet {
 		}
 		request.getRequestDispatcher("/runningJobList").forward(request, response);
 		String sqoopCMD = "sqoop job --meta-connect "+util.getMetaURL()+" --exec "+jobName;
-		String[] cmd = {"/bin/sh","-c",sqoopCMD+" >"+request.getRealPath("")+Constants.LOG_DIR+"/"+logFileName+" 2>&1 &"};
+		String[] cmd = {"/bin/sh","-c",sqoopCMD+" >"+request.getRealPath("")+Constants.LOG_DIR+"/"+logFileName+" 2>&1"};
 //		String [] cmd={"/bin/sh","-c","sqoop job --list"};
 		Process p = null;
 		Runtime rt = Runtime.getRuntime();
@@ -121,7 +121,8 @@ public class execSavedJobServlet extends HttpServlet {
 		}
 		
 		Timestamp endTime = new Timestamp(System.currentTimeMillis());
-		int state = 1;
+		File logFile = new File(request.getRealPath("")+Constants.LOG_DIR+"/"+logFileName);
+		int state = util.parseIsSuccess(logFile);
 		try {
 			String sql = "update SQOOP_JOB set endTime=?,state = ? where id=?";
 			ps = con.prepareStatement(sql);
