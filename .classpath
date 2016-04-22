@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry excluding="util/CopyOfServerThread.java" kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_80">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_45">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
@@ -48,8 +48,6 @@
 	<classpathentry kind="lib" path="/sqoop/lib/jackson-core-asl-1.9.13.jar"/>
 	<classpathentry kind="lib" path="/sqoop/lib/jackson-databind-2.3.1.jar"/>
 	<classpathentry kind="lib" path="/sqoop/lib/jackson-mapper-asl-1.9.13.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/jarsync-source.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/jarsync-sources.jar"/>
 	<classpathentry kind="lib" path="/sqoop/lib/jarsync.jar" sourcepath="/sqoop/lib/jarsync-sources.jar"/>
 	<classpathentry kind="lib" path="/sqoop/lib/kite-data-core-1.0.0.jar"/>
 	<classpathentry kind="lib" path="/sqoop/lib/kite-data-hive-1.0.0.jar"/>
