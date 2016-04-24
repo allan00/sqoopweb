@@ -57,8 +57,20 @@ String message = request.getParameter("message");
 作业名称：${job.jobName }</br></br>
 创建时间：${job.startTime }</br></br>
 结束时间：${job.endTime }</br></br>
-状态：${job.state }</br></br>
-日志：</br></br><textarea cols='50' rows='10' disabled="disabled"> ${job.logContent }</textarea>
+状态：
+  <c:choose>
+<c:when test="${job.state == 0}">
+运行中
+</c:when>
+<c:when test="${job.state == 1}">
+成功
+</c:when>
+<c:otherwise>
+失败
+</c:otherwise>
+</c:choose>
+</br></br>
+日志：</br></br><textarea cols='100' rows='10' disabled="disabled"> ${job.logContent }</textarea>
 
        </div>
     </div>

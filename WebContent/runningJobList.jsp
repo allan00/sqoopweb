@@ -36,7 +36,7 @@ String message = request.getParameter("message");
                                 <div class="xleft">
                           <a href="<%=path %>/index.jsp" class="externalLink">首页</a>
                 &gt;
-                      <a href="<%=path %>/savedJobList" class="externalLink">作业状态/已保存作业</a>
+                      <a href="<%=path %>/savedJobList" class="externalLink">作业状态/运行中</a>
                   </div>
             <div class="xright">            <a href="http://wiki.apache.org/hadoop" class="externalLink">Wiki</a>
             |
@@ -65,7 +65,7 @@ String message = request.getParameter("message");
       <td >&nbsp;运行中</td>
       <td>
       <a href="<%=path %>/jobExec?id=${map.id }"  onclick="">终止</a>
- 				<a href="<%=path %>/jobExecDetail?id=${map.id }"  target="_blank">查看</a>
+ 				<a href="<%=path %>/jobExecDetail?id=${map.id }">查看</a>
       </td>
       </tr>
 </c:forEach>

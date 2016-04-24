@@ -69,7 +69,7 @@ public class jobHistoryListServlet extends HttpServlet {
 		try {
 			con = JdbcUtil.getConn();
 			statement = con.createStatement();
-			String sql = "select * from SQOOP_JOB where state!=0";
+			String sql = "select * from SQOOP_JOB where state!=0 order by id desc";
 			rs = statement.executeQuery(sql);
 			while(rs.next()) {
 				Job o = new Job();

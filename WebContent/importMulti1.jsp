@@ -53,10 +53,15 @@ String message = request.getParameter("message");
     <div id="bodyColumn">
       <div id="contentBox" style="text-align:center">
       <center>
+      <strong>一、导入源选项：</strong></br></br></br>
       <form action="<%=path %>/import2.jsp" method="post">
+      <input type="submit" value="添加导入源"/>
+				<input type="submit" value="下一步"/>		
+      <div>
+      
       <table align="center" style="width: 35%;margin:auto">
-       <tr><td><strong>一、导入源选项：</strong></td></tr>
-       <tr><td></br></br></br></td></tr>
+       <tr><td><strong>导入源(1)：</strong></td></tr>
+       <tr><td></br></td></tr>
        <tr><td>数据库类型：</td><td><select id="DBType" name="DBType"><option value="Mysql">Mysql</option>
        <option value="Oracle">Oracle</option>
        <option value="DB2">DB2</option></select></td></tr>
@@ -68,7 +73,22 @@ String message = request.getParameter("message");
 		<tr><td>表名：</td><td><input type="text" id="tableName" name="tableName"/></td></tr>
 		<tr><td>where条件</td><td><input type="text" id="where" name="where"/></td></tr>
 		</table>
-		<input type="submit" value="下一步"/>		
+		</br></br></br>
+		<table align="center" style="width: 35%;margin:auto">
+       <tr><td><strong>导入源(2)：</strong></td></tr>
+       <tr><td></br></td></tr>
+       <tr><td>数据库类型：</td><td><select id="DBType" name="DBType"><option value="Mysql">Mysql</option>
+       <option value="Oracle">Oracle</option>
+       <option value="DB2">DB2</option></select></td></tr>
+       <tr><td>主机ip:</td><td><input type="text" id="hostIp" name="hostIp"/></td></tr>
+       <tr><td>端口号：</td><td><input type="text" id="port" name="port"/></td></tr>
+		<tr><td>用户名：</td><td><input type="text" id="DBUser" name="DBUser"/></td></tr>
+		<tr><td>密码：</td><td><input type="password" id="DBPassword" name="DBPassword"/></td></tr>
+		<tr><td>数据库名：</td><td><input type="text" id="schema" name="schema"/></td></tr>
+		<tr><td>表名：</td><td><input type="text" id="tableName" name="tableName"/></td></tr>
+		<tr><td>where条件</td><td><input type="text" id="where" name="where"/></td></tr>
+		</table>
+		</div>
 		</form>
 		</center>
        </div>

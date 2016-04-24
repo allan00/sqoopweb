@@ -25,13 +25,13 @@ String basePath1 = request.getScheme()+"://"+request.getServerName()+":"+request
                   <h5>新建作业</h5>
                   <ul>
                   <li class="none">
-                  <a href="<%=path1 %>/import4.jsp">导入</a>
+                  <a href="<%=path1 %>/import4.jsp">单源导入</a>
+            </li>
+            <li class="none">
+                  <a href="<%=path1 %>/importMulti1.jsp">多源导入</a>
             </li>
             <li class="none">
                   <a href="<%=path1 %>/export4.jsp">导出</a>
-            </li>
-            <li class="none">
-                  <a href="<%=path1 %>/rdbms4.jsp">RDBMS数据迁移</a>
             </li>
             <li class="none">
                   <a href="<%=path1 %>/hdfs4.jsp">hdfs数据迁移</a>

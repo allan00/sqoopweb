@@ -46,6 +46,7 @@ public class util {
 	//当作业成功时返回1，作业失败时返回2
 	//logFile中若含有completed successfully，则作业执行成功
 	public static int parseIsSuccess(File logFile){
+		int status = 2;
 		FileReader in = null;
 		BufferedReader br = null;
 		try {
@@ -53,8 +54,10 @@ public class util {
 			br = new BufferedReader(in);
 			String line;
 			while((line=br.readLine())!=null){
-				if(line.contains("completed successfully"))
-					return 1;
+				if(line.contains("completed successfully")){
+					status = 1;
+					break;
+				}
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -73,6 +76,9 @@ public class util {
 			}
 			
 		}
-		return 2;
+		return status;
 	}
+	
+	
+	
 }

@@ -101,7 +101,7 @@ public class execSavedJobServlet extends HttpServlet {
 		Process p = null;
 		Runtime rt = Runtime.getRuntime();
 		int exitValue = 1;
-		try {
+		try { 
 			String logDir = request.getRealPath("/joblog/");
 			File logpath = new File(logDir);
 			if (!logpath.exists()) {
