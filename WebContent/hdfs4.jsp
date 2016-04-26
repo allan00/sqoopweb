@@ -56,24 +56,14 @@ String message = request.getParameter("message");
       <center>
       <form action="<%=path %>/jobExec" method="post">
        <label><strong>导入源选项：</strong></label></br></br></br>
-       <label>数据库类型：</label><select id="DBType" name="DBType"><option value="mysql" id="DBType" name="DBType">Mysql</option></br></br>
-       <option value="oracle">Oracle</option>
-       <option value="db2">DB2</option></select></br></br>
-       <label>主机ip:</label><input type="text" id=“hostIp” name="hostIp"/></br></br>
-       <label>端口号：</label><input type="text" id=“port” name="port"/></br></br>
-		<label>用户名：</label><input type="text" id="DBUser" name="DBUser"/></br></br>
-		<label>密码：</label><input type="password" id="DBPassword" name="DBPassword"/></br></br>
-		<label>数据库名：</label><input type="text" id=“schema” name="schema"/></br></br>
-		<label>表名：</label><input type="text" id=“tableName” name="tableName"/></br></br>
-		<label>where条件</label><input type="text" id="where" name="where"/></br></br>
+       <label>master地址：</label><input type="text" id="target" name="target"/></br></br>
+       <label>端口号：</label><input type="text" id="target" name="target"/></br></br>
+       <label>位置：</label><input type="text" id="target" name="target"/></br></br>
 		
 		<label><strong>导入目的选项</strong></label></br></br></br>
-		<label>导入位置：</label><input type="text" id="target" name="target"/></br></br>
-		<label>列分隔符：</label><input type="text" id="columnSplit" name="columnSplit"/></br></br>
-		<label>行分隔符：</label><input type="text" id="rowSplit" name="rowSplit"/></br></br>
-		<label><strong>其他</strong></label></br></br></br>
-		<label>是否增量导入：</label><input type="radio" name="isIncremental" value="0" checked="checked" />否 
-		<input type="radio" name="isIncremental" value="1" />是 </br></br>
+		<label>master地址：</label><input type="text" id="target" name="target"/></br></br>
+   <label>位置：</label><input type="text" id="target" name="target"/></br></br>
+   <label>端口号：</label><input type="text" id="target" name="target"/></br></br>
 		<input type="submit" value="执行"/>&nbsp;&nbsp;&nbsp;&nbsp;</br></br>
 		<label>作业名称：</label>
 		<input type="text" id="jobName" name="jobName"/>
