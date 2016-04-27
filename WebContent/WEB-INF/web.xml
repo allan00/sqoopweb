@@ -34,15 +34,6 @@
 	</servlet-mapping>
 	
 	<servlet>
-		<servlet-name>jobExecDetail</servlet-name>
-		<servlet-class>servlet.jobExecDetailServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>jobExecDetail</servlet-name>
-		<url-pattern>/jobExecDetail</url-pattern>
-	</servlet-mapping>
-	
-	<servlet>
 		<servlet-name>runningJobList</servlet-name>
 		<servlet-class>servlet.runningJobListServlet</servlet-class>
 	</servlet>
@@ -61,22 +52,81 @@
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>jobExec</servlet-name>
-		<servlet-class>servlet.jobExecServlet</servlet-class>
+		<servlet-name>jobExecDetail</servlet-name>
+		<servlet-class>servlet.jobExecDetailServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>jobExec</servlet-name>
-		<url-pattern>/jobExec</url-pattern>
+		<servlet-name>jobExecDetail</servlet-name>
+		<url-pattern>/jobExecDetail</url-pattern>
+	</servlet-mapping>
+
+<!-- import start -->
+	<servlet>
+		<servlet-name>execImport</servlet-name>
+		<servlet-class>servlet.execImportServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>execImport</servlet-name>
+		<url-pattern>/execImport</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<servlet-name>jobSaveAndExec</servlet-name>
-		<servlet-class>servlet.jobSaveAndExecServlet</servlet-class>
+		<servlet-name>saveAndExecImport</servlet-name>
+		<servlet-class>servlet.saveAndExecImportServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>jobSaveAndExec</servlet-name>
-		<url-pattern>/jobSaveAndExec</url-pattern>
+		<servlet-name>saveAndExecImport</servlet-name>
+		<url-pattern>/saveAndExecImport</url-pattern>
 	</servlet-mapping>
+	<!-- import end -->
 	
+	<!-- Multiimport start -->
+	<servlet>
+		<servlet-name>execImportMulti</servlet-name>
+		<servlet-class>servlet.execImportMultiServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>execImportMulti</servlet-name>
+		<url-pattern>/execImportMulti</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>saveAndExecImportMulti</servlet-name>
+		<servlet-class>servlet.saveAndExecImportMultiServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>saveAndExecImportMulti</servlet-name>
+		<url-pattern>/saveAndExecImportMulti</url-pattern>
+	</servlet-mapping>
+	<!-- Multiimport end -->
+	
+	<!-- export start -->
+	<servlet>
+		<servlet-name>execExport</servlet-name>
+		<servlet-class>servlet.execExportServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>execExport</servlet-name>
+		<url-pattern>/execExport</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>saveAndExecExport</servlet-name>
+		<servlet-class>servlet.saveAndExecExportServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>saveAndExecExport</servlet-name>
+		<url-pattern>/saveAndExecExport</url-pattern>
+	</servlet-mapping>
+	<!-- export start -->
+	
+	<!-- HDFS Transfer start -->
+	<servlet>
+		<servlet-name>execHDFSTransfer</servlet-name>
+		<servlet-class>servlet.execHDFSTransferServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>execHDFSTransfer</servlet-name>
+		<url-pattern>/execHDFSTransfer</url-pattern>
+	</servlet-mapping>
+	<!-- HDFS Transfer end -->
 	
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>

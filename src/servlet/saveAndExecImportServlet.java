@@ -25,9 +25,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;  
 import java.sql.Statement;  
 
-public class jobSaveAndExecServlet extends HttpServlet {
+public class saveAndExecImportServlet extends HttpServlet {
 
-	public jobSaveAndExecServlet() {
+	public saveAndExecImportServlet() {
 		super();
 	}
 

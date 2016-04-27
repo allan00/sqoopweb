@@ -65,7 +65,7 @@
 	<div id="bodyColumn">
 		<div id="contentBox">
 			<center>
-				<form id="importForm" name="importForm" action="<%=path%>/jobExec" method="post">
+				<form id="importForm" name="importForm" action="<%=path%>/execImport" method="post">
 					<table align="center" style="width: 35%; margin: auto">
 						<label hidden="true"><strong>导入源选项：</strong></label>
 						<label hidden="true">数据库类型：</label>
@@ -163,7 +163,7 @@ function save_submit(){
 	}
 		
 	var importForm = document.getElementById("importForm");
-	importForm.action="<%=path%>/jobSaveAndExec";
+	importForm.action="<%=path%>/saveAndExecImport";
 	importForm.submit();
 }
 </script>

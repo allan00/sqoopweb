@@ -54,7 +54,7 @@ String message = request.getParameter("message");
       <div id="contentBox" style="text-align:center">
       <center>
       <strong>一、导入源选项：</strong></br></br></br>
-      <form action="<%=path %>/import2.jsp" method="post">
+      <form action="<%=path %>/importMulti2.jsp" method="post">
       <input type="submit" value="添加导入源"/>
 				<input type="submit" value="下一步"/>		
       <div>

@@ -34,9 +34,9 @@ import java.sql.SQLException;
 import java.sql.Statement;  
 import java.sql.Timestamp;
 
-public class jobExecServlet extends HttpServlet {
+public class execImportServlet extends HttpServlet {
 
-	public jobExecServlet() {
+	public execImportServlet() {
 		super();
 	}
 
