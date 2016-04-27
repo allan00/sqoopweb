@@ -23,9 +23,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;  
 import java.sql.Statement;  
 
-public class jobCreateAndExecServlet extends HttpServlet {
+public class savedJobDetailServlet extends HttpServlet {
 
-	public jobCreateAndExecServlet() {
+	public savedJobDetailServlet() {
 		super();
 	}
 
@@ -48,7 +48,7 @@ public class jobCreateAndExecServlet extends HttpServlet {
 	} 
 	
 	public void jobList() {
-		String cmd = "sqoop job --create test0103 --  import --direct  --connect jdbc:mysql://db:3306/gszxglzx --username root --password root --table table_0101";
+		String cmd = "sqoop job --show test0103";
 		Runtime rt = Runtime.getRuntime();
 		Process p = null;
 		int exitValue = 1;

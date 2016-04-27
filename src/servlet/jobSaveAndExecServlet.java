@@ -23,9 +23,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;  
 import java.sql.Statement;  
 
-public class jobDetailServlet extends HttpServlet {
+public class jobSaveAndExecServlet extends HttpServlet {
 
-	public jobDetailServlet() {
+	public jobSaveAndExecServlet() {
 		super();
 	}
 
@@ -41,14 +41,34 @@ public class jobDetailServlet extends HttpServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		List<String> jobList = null;
-		jobList();
-		request.getRequestDispatcher("/jobList.jsp").forward(request, response);
+		
+		String jobName = jobSave(request, response);
+		request.getRequestDispatcher("/execSavedJob?id="+jobName).forward(request, response);
 		return;
 	} 
 	
-	public void jobList() {
-		String cmd = "sqoop job --show test0103";
+	public String jobSave(HttpServletRequest request, HttpServletResponse response) {
+		String DBType = request.getParameter("DBType");
+		String hostIp = request.getParameter("hostIp");
+		String port = request.getParameter("port");
+		String DBUser = request.getParameter("DBUser");
+		String DBPassword = request.getParameter("DBPassword");
+		String schema = request.getParameter("schema");
+		String tableName = request.getParameter("tableName");
+		String where = request.getParameter("where");
+		String target = request.getParameter("target");
+		String columnSplit = request.getParameter("columnSplit");
+		String rowSplit = request.getParameter("rowSplit");
+//		String isIncremental = request.getParameter("isIncremental");
+		String jobName = request.getParameter("jobName");
+		
+		StringBuilder sb = new StringBuilder(String.format("sqoop job --create %s --  import --direct  --connect jdbc:%s://%s:%s/%s --%s %s --%s %s --table %s",jobName,DBType,hostIp,port,DBUser,DBPassword,schema,tableName));
+		addAttribute(sb, "--where", where);
+//		addAttribute(sb, "--target", target);
+//		addAttribute(sb, "where", columnSplit);
+//		addAttribute(sb, "where", rowSplit);
+//		addAttribute(sb, "--append", isIncremental);
+		String cmd =sb.toString();
 		Runtime rt = Runtime.getRuntime();
 		Process p = null;
 		int exitValue = 1;
@@ -74,6 +94,14 @@ public class jobDetailServlet extends HttpServlet {
 			e.printStackTrace();
 		} catch (Exception e1) {
 			e1.printStackTrace();
+		}
+		return jobName;
+	}
+	
+	private void addAttribute(StringBuilder sb,String name,String value){
+		if(value!=null &&value!="")
+		{
+			sb.append(name+" "+value);
 		}
 	}
 

@@ -70,7 +70,7 @@ String message = request.getParameter("message");
 </c:otherwise>
 </c:choose>
 </br></br>
-日志：</br></br><textarea cols='100' rows='10' disabled="disabled"> ${job.logContent }</textarea>
+日志：</br></br><textarea cols='60' rows='20' disabled="disabled"> ${job.logContent }</textarea>
 
        </div>
     </div>

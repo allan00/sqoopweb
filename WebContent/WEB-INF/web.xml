@@ -14,6 +14,16 @@
 		<servlet-name>savedJobList</servlet-name>
 		<url-pattern>/savedJobList</url-pattern>
 	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>savedJobDetail</servlet-name>
+		<servlet-class>servlet.savedJobDetailServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>savedJobDetail</servlet-name>
+		<url-pattern>/savedJobDetail</url-pattern>
+	</servlet-mapping>
+	
 	 <servlet>
 		<servlet-name>execSavedJob</servlet-name>
 		<servlet-class>servlet.execSavedJobServlet</servlet-class>
@@ -22,6 +32,7 @@
 		<servlet-name>execSavedJob</servlet-name>
 		<url-pattern>/execSavedJob</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>jobExecDetail</servlet-name>
 		<servlet-class>servlet.jobExecDetailServlet</servlet-class>
@@ -30,6 +41,7 @@
 		<servlet-name>jobExecDetail</servlet-name>
 		<url-pattern>/jobExecDetail</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>runningJobList</servlet-name>
 		<servlet-class>servlet.runningJobListServlet</servlet-class>
@@ -38,6 +50,7 @@
 		<servlet-name>runningJobList</servlet-name>
 		<url-pattern>/runningJobList</url-pattern>
 	</servlet-mapping>
+	
 	<servlet>
 		<servlet-name>jobHistoryList</servlet-name>
 		<servlet-class>servlet.jobHistoryListServlet</servlet-class>
@@ -46,14 +59,7 @@
 		<servlet-name>jobHistoryList</servlet-name>
 		<url-pattern>/jobHistoryList</url-pattern>
 	</servlet-mapping>
-	<servlet>
-		<servlet-name>jobCreate</servlet-name>
-		<servlet-class>servlet.jobCreateServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>jobCreate</servlet-name>
-		<url-pattern>/jobCreate</url-pattern>
-	</servlet-mapping>
+
 	<servlet>
 		<servlet-name>jobExec</servlet-name>
 		<servlet-class>servlet.jobExecServlet</servlet-class>
@@ -63,21 +69,14 @@
 		<url-pattern>/jobExec</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<servlet-name>jobCreateAndExec</servlet-name>
-		<servlet-class>servlet.jobCreateAndExecServlet</servlet-class>
+		<servlet-name>jobSaveAndExec</servlet-name>
+		<servlet-class>servlet.jobSaveAndExecServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>jobCreateAndExec</servlet-name>
-		<url-pattern>/jobCreateAndExec</url-pattern>
+		<servlet-name>jobSaveAndExec</servlet-name>
+		<url-pattern>/jobSaveAndExec</url-pattern>
 	</servlet-mapping>
-	<servlet>
-		<servlet-name>jobDetail</servlet-name>
-		<servlet-class>servlet.jobDetailServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>jobDetail</servlet-name>
-		<url-pattern>/jobDetail</url-pattern>
-	</servlet-mapping>
+	
 	
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>

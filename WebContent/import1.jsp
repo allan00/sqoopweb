@@ -56,7 +56,7 @@ String message = request.getParameter("message");
       <form action="<%=path %>/import2.jsp" method="post">
       <table align="center" style="width: 35%;margin:auto">
        <tr><td><strong>一、导入源选项：</strong></td></tr>
-       <tr><td></br></br></br></td></tr>
+       <tr><td></br></td></tr>
        <tr><td>数据库类型：</td><td><select id="DBType" name="DBType"><option value="Mysql">Mysql</option>
        <option value="Oracle">Oracle</option>
        <option value="DB2">DB2</option></select></td></tr>
@@ -67,8 +67,9 @@ String message = request.getParameter("message");
 		<tr><td>数据库名：</td><td><input type="text" id="schema" name="schema"/></td></tr>
 		<tr><td>表名：</td><td><input type="text" id="tableName" name="tableName"/></td></tr>
 		<tr><td>where条件</td><td><input type="text" id="where" name="where"/></td></tr>
+		<tr><td></br><input type="submit" value="下一步"/>	</td></tr>	
 		</table>
-		<input type="submit" value="下一步"/>		
+		
 		</form>
 		</center>
        </div>
