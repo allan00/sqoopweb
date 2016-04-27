@@ -57,9 +57,9 @@ String message = request.getParameter("message");
       <table align="center" style="width: 35%;margin:auto">
        <tr><td><strong>一、导入源选项：</strong></td></tr>
        <tr><td></br></td></tr>
-       <tr><td>数据库类型：</td><td><select id="DBType" name="DBType"><option value="Mysql">Mysql</option>
-       <option value="Oracle">Oracle</option>
-       <option value="DB2">DB2</option></select></td></tr>
+       <tr><td>数据库类型：</td><td><select id="DBType" name="DBType"><option value="mysql">Mysql</option>
+       <option value="oracle">Oracle</option>
+       <option value="db2">DB2</option></select></td></tr>
        <tr><td>主机ip:</td><td><input type="text" id="hostIp" name="hostIp"/></td></tr>
        <tr><td>端口号：</td><td><input type="text" id="port" name="port"/></td></tr>
 		<tr><td>用户名：</td><td><input type="text" id="DBUser" name="DBUser"/></td></tr>

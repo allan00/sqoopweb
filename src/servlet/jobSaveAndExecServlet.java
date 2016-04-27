@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.sqoop.Sqoop;
 import org.apache.sqoop.tool.JobTool;
 
+import util.util;
+
 import com.cloudera.sqoop.SqoopOptions;
 import com.cloudera.sqoop.tool.SqoopTool;
 
@@ -62,13 +64,14 @@ public class jobSaveAndExecServlet extends HttpServlet {
 //		String isIncremental = request.getParameter("isIncremental");
 		String jobName = request.getParameter("jobName");
 		
-		StringBuilder sb = new StringBuilder(String.format("sqoop job --create %s --  import --direct  --connect jdbc:%s://%s:%s/%s --%s %s --%s %s --table %s",jobName,DBType,hostIp,port,DBUser,DBPassword,schema,tableName));
+		StringBuilder sb = new StringBuilder(String.format("sqoop job --create %s --meta-connect %s --  import --direct  --connect jdbc:%s://%s:%s/%s --username %s --password %s --table %s",jobName,util.getMetaURL(),DBType,hostIp,port,schema,DBUser,DBPassword,tableName));
 		addAttribute(sb, "--where", where);
 //		addAttribute(sb, "--target", target);
 //		addAttribute(sb, "where", columnSplit);
 //		addAttribute(sb, "where", rowSplit);
 //		addAttribute(sb, "--append", isIncremental);
-		String cmd =sb.toString();
+		String sqoopCMD =sb.toString();
+		String[] cmd = {"/bin/sh","-c",sqoopCMD};
 		Runtime rt = Runtime.getRuntime();
 		Process p = null;
 		int exitValue = 1;
