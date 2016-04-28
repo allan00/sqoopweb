@@ -10,6 +10,7 @@ public class Job {
 	private String mrID;
 	private String logFileName;
 	private int state;
+	private int type;//作业类型，1表示单源导入，2表示多源导入，3表示导出，4表示hdfs迁移
 	private String logContent;
 	public int getId() {
 		return id;
@@ -52,6 +53,12 @@ public class Job {
 	}
 	public void setState(int state) {
 		this.state = state;
+	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
 	}
 	public String getLogContent() {
 		return logContent;

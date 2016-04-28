@@ -64,11 +64,20 @@
 	<%@include file="/left.jsp"%>
 	<div id="bodyColumn">
 		<div id="contentBox">
-		<h3>新建多源导入作业</h3>
+		<h3>新建导出作业</h3>
 			<center>
-				<form id="importForm" name="importForm" action="<%=path%>/jobExec" method="post">
+				<form id="exportForm" name="exportForm" action="<%=path%>/execExport" method="post">
 					<table align="center" style="width: 35%; margin: auto">
-						<label hidden="true"><strong>导入源选项：</strong></label>
+					<label hidden="true"><strong>一、导入目的选项</strong></label>
+						<label hidden="true">导入位置：</label>
+						<input type="text" id="target" name="target" value="${target }" hidden="true" />
+						<label hidden="true">列分隔符：</label>
+						<input type="text" id="columnSplit" name="columnSplit" value="${columnSplit }"
+							hidden="true" />
+						<label hidden="true">行分隔符：</label>
+						<input type="text" id="rowSplit" name="rowSplit" value="${rowSplit }" hidden="true" />
+						
+						<label hidden="true"><strong>二、导入源选项：</strong></label>
 						<label hidden="true">数据库类型：</label>
 						<input type="text" id="DBType" name="DBType" value="<%=DBType%>"
 							hidden="true" />
@@ -94,19 +103,6 @@
 						<input type="text" id="where" name="where" value="<%=where%>"
 							hidden="true" />
 
-						<label hidden="true"><strong>二、导入目的选项</strong></label>
-						<label hidden="true">导入位置：</label>
-						<input type="text" id="target" name="target" hidden="true" />
-						<label hidden="true">列分隔符：</label>
-						<input type="text" id="columnSplit" name="columnSplit"
-							hidden="true" />
-						<label hidden="true">行分隔符：</label>
-						<input type="text" id="rowSplit" name="rowSplit" hidden="true" />
-						<label hidden="true"><strong>其他</strong></label>
-						<label hidden="true">是否增量导入：</label>
-						<input hidden="true" type="text" name="isIncremental"
-							value="<%=isIncremental%>" />
-							
 						<tr>
 							<td><strong>三、作业执行</strong></td>
 						</tr>
@@ -141,8 +137,8 @@
 	
 	<script>
 function checkForm(){
-    /* var username = importForm.username.value;
-    var password = importForm.password.value;
+    /* var username = exportForm.username.value;
+    var password = exportForm.password.value;
 		
 	   if(username==""||username==null){
 		alert("用户名不能为空");
@@ -163,9 +159,9 @@ function save_submit(){
 		return false;
 	}
 		
-	var importForm = document.getElementById("importForm");
-	importForm.action="<%=path%>/jobSaveAndExec";
-	importForm.submit();
+	var exportForm = document.getElementById("exportForm");
+	exportForm.action="<%=path%>/saveAndExecExport";
+	exportForm.submit();
 }
 </script>
 </body>
