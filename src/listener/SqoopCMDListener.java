@@ -4,40 +4,43 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import util.ServerThread;
-
 public class SqoopCMDListener implements ServletContextListener {
-	private java.util.Timer timer = null;
+	private static final ExecutorService es = Executors.newCachedThreadPool(); 
 	 @Override
 	 public void contextDestroyed(ServletContextEvent event) {
-	  timer.cancel();
-	  event.getServletContext().log("定时器销毁");
+		 es.shutdownNow();
+	  event.getServletContext().log("listener销毁");
 	 }
 
 	 @Override
-	 public void contextInitialized(ServletContextEvent event) {
-		 new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				try {
-					listenSqoopCMD();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+	 public void contextInitialized(final ServletContextEvent event) {
+		 Runnable task = new Runnable() {
+				
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					try {
+						listenSqoopCMD(event.getServletContext().getRealPath(""));
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-			}
-		}).start();
+			};
+		 es.submit(task);
 	 }
 	
-	public void listenSqoopCMD() throws Exception{
+	public void listenSqoopCMD(String realPath) throws Exception{
 		//服务端在20006端口监听客户端请求的TCP连接
-		ServerSocket server = new ServerSocket(20006);
+		System.out.println(realPath);
+		ServerSocket server = new ServerSocket(20005);
 		Socket client = null;
 		boolean f = true;
 		while(f){
@@ -45,7 +48,7 @@ public class SqoopCMDListener implements ServletContextListener {
 			client = server.accept();
 			System.out.println(client.getInetAddress()+"与客户端连接成功！");
 			//为每个客户端连接开启一个线程
-			new ServerThread(client).start();
+			new ServerThread(client,realPath).start();
 		}
 		server.close();
 	}
