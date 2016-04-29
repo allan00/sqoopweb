@@ -1,12 +1,17 @@
 package servlet;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.Socket;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +20,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import listener.ServerThread;
 import model.SavedJob;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.hadoop.fs.FSDataOutputStream;
+import org.apache.hadoop.fs.Path;
 import org.apache.sqoop.Sqoop;
 import org.apache.sqoop.tool.JobTool;
+import org.metastatic.rsync.Delta;
+import org.metastatic.rsync.Rdiff;
 
 import util.Constants;
 import util.JdbcUtil;
@@ -35,7 +47,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 
 public class execImportMultiServlet extends HttpServlet {
-
+	public static final Log LOG = LogFactory.getLog(execImportMultiServlet.class.getName());
 	public execImportMultiServlet() {
 		super();
 	}
@@ -63,8 +75,8 @@ public class execImportMultiServlet extends HttpServlet {
 	public void exec(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 		String jobName = util.returnDate()+"job";
 		String logFileName = jobName+".log";
-		String sqoopCMD = parseCMD(request,response);
-		String[] cmd = {"/bin/sh","-c",sqoopCMD+" >"+request.getRealPath("")+Constants.LOG_DIR+"/"+logFileName+" 2>&1"};
+		String _CMD = parseCMD(request,response);
+		String cmd = _CMD+" >"+request.getRealPath("")+Constants.LOG_DIR+"/"+logFileName+" 2>&1";
 		PreparedStatement ps = null;
 		Connection con = null;
 		ResultSet rs = null;
@@ -73,7 +85,7 @@ public class execImportMultiServlet extends HttpServlet {
 		
 		try {
 			con = JdbcUtil.getConn();
-			String sql = "insert into SQOOP_JOB(jobName,startTime,logFileName,state) values(?,?,?,?)";
+			String sql = "insert into SQOOP_JOB(jobName,startTime,logFileName,state,type) values(?,?,?,?,1)";
 			ps = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, jobName);
 			ps.setTimestamp(2, startTime);
@@ -92,48 +104,46 @@ public class execImportMultiServlet extends HttpServlet {
 			JdbcUtil.close(rs, ps);
 		}
 		request.getRequestDispatcher("/runningJobList").forward(request, response);
-		
-		Process p = null;
-		Runtime rt = Runtime.getRuntime();
-		int exitValue = 1;
+		commitCMD(generate_id,logFileName,cmd);//把任务提交给服务器
+		return;
+	}
+
+	private void commitCMD(long generate_id, String logFileName, String cmd) {
+		Socket client = null;
 		try {
-			String logDir = request.getRealPath("")+Constants.LOG_DIR;
-			File logpath = new File(logDir);
-			if (!logpath.exists()) {
-				logpath.mkdirs();
+			client = new Socket("127.0.0.1",20005);
+			client.setSoTimeout(10000);
+			String info= String.format("id:{%d},logFileName:{%s},cmd:{%s}", generate_id,logFileName,cmd);
+			sendInfo(client,info);
+			Thread.sleep(100L);
+			info = receiveInfo(client);
+			if (!("command valid,executing cmd").equals(info)) {
+					throw new Exception(info);
 			}
-			p = rt.exec(cmd);
-			exitValue = p.waitFor();
-			p.destroy();
 			
-//			System.out.println(exitValue);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
-		finally{
-		}
-		
-		Timestamp endTime = new Timestamp(System.currentTimeMillis());
-		int state = 1;
-		try {
-			String sql = "update SQOOP_JOB set endTime=?,state = ? where id=?";
-			ps = con.prepareStatement(sql);
-			ps.setTimestamp(1, endTime);
-			ps.setInt(2, state);
-			ps.setLong(3, generate_id);
-			ps.executeUpdate();		
-		} catch (SQLException e) {
+		} catch (SocketTimeoutException e) {
+			System.out.println("Time out, No response");
+		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		finally{
-			JdbcUtil.close(null, ps);
-			JdbcUtil.closeConnection(con);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (client != null) {
+				// 如果构造函数建立起了连接，则关闭套接字，如果没有建立起连接，自然不用关闭
+				try {
+					client.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} // 只关闭socket，其关联的输入输出流也会被关闭
+			}
 		}
 		
-		return;
 	}
 
 	private String parseCMD(HttpServletRequest request, HttpServletResponse response) {
@@ -161,6 +171,25 @@ public class execImportMultiServlet extends HttpServlet {
 	 */
 	public void init() throws ServletException {
 		// Put your code here
+	}
+	
+	public static String receiveInfo(Socket sock) throws Exception // 读取服务端的反馈信息
+	{
+		InputStream sockIn = sock.getInputStream(); // 定义socket输入流
+		byte[] bufIn = new byte[1024];
+		int lenIn = sockIn.read(bufIn); // 将服务端返回的信息写入bufIn字节缓冲区
+		if (lenIn == -1)
+			return "";
+		String info = new String(bufIn, 0, lenIn, "utf-8");
+		LOG.debug("receive<----" + info);
+		return info;
+	}
+
+	public static void sendInfo(Socket sock, String infoStr) throws Exception// 将信息反馈给服务端
+	{
+		OutputStream sockOut = sock.getOutputStream();
+		sockOut.write(infoStr.getBytes("utf-8"));
+		LOG.debug("send---->" + infoStr);
 	}
 
 }

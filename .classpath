@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry excluding="util/CopyOfServerThread.java" kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_45">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.7.0_80">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
@@ -13,60 +13,5 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="/sqoop/lib/ant-contrib-1.0b3.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/ant-eclipse-1.0-jvm1.2.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/avro-1.7.5.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/avro-mapred-1.7.5-hadoop2.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/commons-codec-1.4.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/commons-compress-1.4.1.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/commons-io-1.4.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/commons-jexl-2.1.1.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/hadoop-annotations-2.6.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/hadoop-auth-2.6.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/hadoop-common-2.6.0-sources.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/hadoop-common-2.6.0-test-sources.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/hadoop-common-2.6.0-tests.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/hadoop-common-2.6.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/hadoop-hdfs-2.6.0-tests.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/hadoop-hdfs-2.6.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/hadoop-hdfs-nfs-2.6.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/hadoop-mapreduce-client-app-2.6.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/hadoop-mapreduce-client-common-2.6.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/hadoop-mapreduce-client-core-2.6.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/hadoop-mapreduce-client-jobclient-2.6.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/hadoop-nfs-2.6.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/hadoop-yarn-api-2.6.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/hadoop-yarn-client-2.6.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/hadoop-yarn-common-2.6.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/hadoop-yarn-server-common-2.6.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/hsqldb-1.8.0.10.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/htrace-core-3.0.4.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/ivy-2.3.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/jackson-annotations-2.3.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/jackson-core-2.3.1.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/jackson-core-asl-1.9.13.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/jackson-databind-2.3.1.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/jackson-mapper-asl-1.9.13.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/jarsync.jar" sourcepath="/sqoop/lib/jarsync-sources.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/kite-data-core-1.0.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/kite-data-hive-1.0.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/kite-data-mapreduce-1.0.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/kite-hadoop-compatibility-1.0.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/mysql-connector-java-5.1.37.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/opencsv-2.3.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/paranamer-2.3.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/parquet-avro-1.4.1.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/parquet-column-1.4.1.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/parquet-common-1.4.1.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/parquet-encoding-1.4.1.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/parquet-format-2.0.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/parquet-generator-1.4.1.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/parquet-hadoop-1.4.1.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/parquet-jackson-1.4.1.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/protobuf-java-2.5.0.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/slf4j-api-1.6.1.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/snappy-java-1.0.5.jar"/>
-	<classpathentry kind="lib" path="/sqoop/lib/xz-1.0.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

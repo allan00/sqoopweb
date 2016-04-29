@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.jasper.tagplugins.jstl.core.Otherwise;
 
 import util.Constants;
 import util.JdbcUtil;
@@ -37,13 +38,14 @@ public class ServerThread extends Thread {
 			info = receiveInfo(client);
 			if (validateCMD(info)) {
 				int id = parseId(info);
+				int type = parseType(info);
 				String logFileName = parseLogFileName(info);
 				String cmd = parseCMD(info);
 				info = "command valid,executing cmd";
 				LOG.debug("id="+id+",logFileName="+logFileName+"cmd="+cmd);
 				sendInfo(client, info);
 
-				exec(id, logFileName, cmd);
+				exec(id,type, logFileName, cmd);
 
 			} else {
 				info = "command invalid,connection closed";
@@ -62,7 +64,7 @@ public class ServerThread extends Thread {
 		}
 	}
 
-	private void exec(int id, String logFileName, String cmd) {
+	private void exec(int id, int type,String logFileName, String cmd) {
 		PreparedStatement ps = null;
 		Connection con = null;
 		Process p = null;
@@ -74,12 +76,33 @@ public class ServerThread extends Thread {
 			if (!logpath.exists()) {
 				logpath.mkdirs();
 			}
-			String[] linuxCMD = { "/bin/sh", "-c", cmd };
-			p = rt.exec(linuxCMD);
-			exitValue = p.waitFor();
-			p.destroy();
-
-			// System.out.println(exitValue);
+			switch(type){
+			case 1:{		//单源导入作业
+				String[] linuxCMD = { "/bin/sh", "-c", cmd };
+				p = rt.exec(linuxCMD);
+				exitValue = p.waitFor();
+				p.destroy();
+			}
+			case 2:{//多源导入作业
+				
+			}
+			case 3:{		//导出作业
+				String[] linuxCMD = { "/bin/sh", "-c", cmd };
+				p = rt.exec(linuxCMD);
+				exitValue = p.waitFor();
+				p.destroy();
+			}
+			
+			case 4:{		//HDFS迁移作业
+				String[] linuxCMD = { "/bin/sh", "-c", cmd };
+				p = rt.exec(linuxCMD);
+				exitValue = p.waitFor();
+				p.destroy();
+			}
+			default:{
+				
+			}
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception e1) {
@@ -111,12 +134,19 @@ public class ServerThread extends Thread {
 		// TODO Auto-generated method stub
 		return true;
 	}
-
+	
 	private static int parseId(String info) {
 		int start = info.indexOf("id:{") + 4;
-		int end = info.indexOf("},logFileName:");
+		int end = info.indexOf("},type:");
 		int id = Integer.valueOf(info.substring(start, end));
 		return id;
+	}
+	
+	private static int parseType(String info) {
+		int start = info.indexOf("type:{") + 6;
+		int end = info.indexOf("},logFileName:");
+		int type = Integer.valueOf(info.substring(start, end));
+		return type;
 	}
 
 	private static String parseLogFileName(String info) {

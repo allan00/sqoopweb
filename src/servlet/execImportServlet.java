@@ -113,7 +113,7 @@ public class execImportServlet extends HttpServlet {
 		try {
 			client = new Socket("127.0.0.1",20005);
 			client.setSoTimeout(10000);
-			String info= String.format("id:{%d},logFileName:{%s},cmd:{%s}", generate_id,logFileName,cmd);
+			String info= String.format("id:{%d},type:{1},logFileName:{%s},cmd:{%s}", generate_id,logFileName,cmd);
 			sendInfo(client,info);
 			Thread.sleep(100L);
 			info = receiveInfo(client);
@@ -181,7 +181,7 @@ public class execImportServlet extends HttpServlet {
 		if (lenIn == -1)
 			return "";
 		String info = new String(bufIn, 0, lenIn, "utf-8");
-		LOG.info("receive<----" + info);
+		LOG.debug("receive<----" + info);
 		return info;
 	}
 
@@ -189,7 +189,7 @@ public class execImportServlet extends HttpServlet {
 	{
 		OutputStream sockOut = sock.getOutputStream();
 		sockOut.write(infoStr.getBytes("utf-8"));
-		LOG.info("send---->" + infoStr);
+		LOG.debug("send---->" + infoStr);
 	}
 
 }
