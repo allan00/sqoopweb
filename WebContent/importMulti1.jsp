@@ -52,6 +52,7 @@ function addSource(dvID)
  	insertText = insertText.replace(new RegExp("_i","gm"),i);
  /* 	alert(insertText);  */
  	dv.innerHTML = dv.innerHTML+insertText;
+ 	document.getElementById("count").value = i;
 }
 function removeSource(dvID)
 {
@@ -62,6 +63,7 @@ function removeSource(dvID)
   var source = document.getElementById("source"+i);
   source.parentNode.removeChild(source);
   i--;
+  document.getElementById("count").value = i;
 }		
 </script>
   
@@ -105,6 +107,7 @@ function removeSource(dvID)
       <input type="button" value="删除导入源"  onclick="removeSource('sources')"/>
 				<input type="submit" value="下一步"/>		
       <div id="sources" name="sources">
+      <input type="text" id="count" name="count" value='1' hidden="true"/>
       <div id="source1" name="source1" class="source" style="border:dotted 1px grey;">
       <table align="center" style="width:240px;">
        <tr><td><strong>导入源(1)：</strong></td></tr>

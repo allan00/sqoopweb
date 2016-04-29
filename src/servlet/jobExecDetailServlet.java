@@ -2,38 +2,21 @@ package servlet;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import model.Job;
-
-import org.apache.sqoop.Sqoop;
-import org.apache.sqoop.tool.JobTool;
-
 import util.Constants;
 import util.JdbcUtil;
-import util.util;
-
-import com.cloudera.sqoop.SqoopOptions;
-import com.cloudera.sqoop.tool.SqoopTool;
-
 import java.sql.Connection;    
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;  
 import java.sql.SQLException;  
-import java.sql.Statement;  
-import java.sql.Timestamp;
+
 
 public class jobExecDetailServlet extends HttpServlet {
 

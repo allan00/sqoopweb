@@ -1,44 +1,20 @@
 package servlet;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import listener.ServerThread;
-import model.SavedJob;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.hadoop.fs.FSDataOutputStream;
-import org.apache.hadoop.fs.Path;
-import org.apache.sqoop.Sqoop;
-import org.apache.sqoop.tool.JobTool;
-import org.metastatic.rsync.Delta;
-import org.metastatic.rsync.Rdiff;
-
 import util.Constants;
 import util.JdbcUtil;
 import util.util;
-
-import com.cloudera.sqoop.SqoopOptions;
-import com.cloudera.sqoop.tool.SqoopTool;
-
 import java.sql.Connection;    
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;  
@@ -85,12 +61,13 @@ public class execImportServlet extends HttpServlet {
 		
 		try {
 			con = JdbcUtil.getConn();
-			String sql = "insert into SQOOP_JOB(jobName,startTime,logFileName,state,type) values(?,?,?,?,1)";
+			String sql = "insert into SQOOP_JOB(jobName,startTime,logFileName,state,type) values(?,?,?,?,?)";
 			ps = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, jobName);
 			ps.setTimestamp(2, startTime);
 			ps.setString(3, logFileName);
 			ps.setInt(4, 0); 
+			ps.setInt(5, Constants.IMPORT);
 			int i = ps.executeUpdate();
 			
 			rs = ps.getGeneratedKeys();
@@ -113,7 +90,7 @@ public class execImportServlet extends HttpServlet {
 		try {
 			client = new Socket("127.0.0.1",20005);
 			client.setSoTimeout(10000);
-			String info= String.format("id:{%d},type:{1},logFileName:{%s},cmd:{%s}", generate_id,logFileName,cmd);
+			String info= String.format("id:{%d},type:{%d},logFileName:{%s},cmd:{%s}", generate_id,Constants.IMPORT,logFileName,cmd);
 			sendInfo(client,info);
 			Thread.sleep(100L);
 			info = receiveInfo(client);
@@ -147,7 +124,7 @@ public class execImportServlet extends HttpServlet {
 	}
 
 	private String parseCMD(HttpServletRequest request, HttpServletResponse response) {
-		String cmd = "";
+		String cmd = null;
 		String DBType = request.getParameter("DBType");
 		String hostIp = request.getParameter("hostIp");
 		String port = request.getParameter("port");

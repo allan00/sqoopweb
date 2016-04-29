@@ -6,19 +6,15 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import util.Constants;
 import util.JdbcUtil;
 import util.util;
-
 import java.sql.Connection;    
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;  
@@ -26,9 +22,9 @@ import java.sql.SQLException;
 import java.sql.Statement;  
 import java.sql.Timestamp;
 
-public class execImportMultiServlet extends HttpServlet {
-	public static final Log LOG = LogFactory.getLog(execImportMultiServlet.class.getName());
-	public execImportMultiServlet() {
+public class execHDFSTransferServlet extends HttpServlet {
+	public static final Log LOG = LogFactory.getLog(execHDFSTransferServlet.class.getName());
+	public execHDFSTransferServlet() {
 		super();
 	}
 
@@ -55,7 +51,8 @@ public class execImportMultiServlet extends HttpServlet {
 	public void exec(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 		String jobName = util.returnDate()+"job";
 		String logFileName = jobName+".log";
-		String cmd = parseCMD(request,response,logFileName);
+		String _CMD = parseCMD(request,response);
+		String cmd = _CMD+" >"+request.getRealPath("")+Constants.LOG_DIR+"/"+logFileName+" 2>&1";
 		PreparedStatement ps = null;
 		Connection con = null;
 		ResultSet rs = null;
@@ -69,8 +66,8 @@ public class execImportMultiServlet extends HttpServlet {
 			ps.setString(1, jobName);
 			ps.setTimestamp(2, startTime);
 			ps.setString(3, logFileName);
-			ps.setInt(4, 0);
-			ps.setInt(5, Constants.IMPORT_MULTI); 
+			ps.setInt(4, 0); 
+			ps.setInt(5, Constants.HDFS_TRANSFER); 
 			int i = ps.executeUpdate();
 			
 			rs = ps.getGeneratedKeys();
@@ -93,7 +90,7 @@ public class execImportMultiServlet extends HttpServlet {
 		try {
 			client = new Socket("127.0.0.1",20005);
 			client.setSoTimeout(10000);
-			String info= String.format("id:{%d},type:{%d},logFileName:{%s},cmd:{%s}", generate_id,Constants.IMPORT_MULTI,logFileName,cmd);
+			String info= String.format("id:{%d},type:{%d},logFileName:{%s},cmd:{%s}", generate_id,Constants.HDFS_TRANSFER,logFileName,cmd);
 			sendInfo(client,info);
 			Thread.sleep(100L);
 			info = receiveInfo(client);
@@ -126,28 +123,23 @@ public class execImportMultiServlet extends HttpServlet {
 		
 	}
 
-	private String parseCMD(HttpServletRequest request, HttpServletResponse response,String logFileName) {
-		StringBuilder cmd = new StringBuilder();
-		int count = Integer.valueOf(request.getParameter("count"));
-		for(int i=1;i<=count;i++ ){
-		String target = request.getParameter("target"+i);
-		String columnSplit = request.getParameter("columnSplit"+i);
-		String rowSplit = request.getParameter("rowSplit"+i);
-		
-		String DBType = request.getParameter("DBType"+i);
-		String hostIp = request.getParameter("hostIp"+i);
-		String port = request.getParameter("port"+i);
-		String DBUser = request.getParameter("DBUser"+i);
-		String DBPassword = request.getParameter("DBPassword"+i);
-		String schema = request.getParameter("schema"+i);
-		String tableName = request.getParameter("tableName"+i);
-		String where = request.getParameter("where"+i);
-		String l = request.getRealPath("")+Constants.LOG_DIR+"/"+logFileName;
-		String str = String.format("sqoop import --append --direct  --connect jdbc:%s://%s:%s/%s --username %s --password %s --table %s >%s 2>&1"+Constants.SPLIT_SYMBOL, DBType,hostIp,port,schema,DBUser,DBPassword,tableName,l); 
-		cmd.append(str);
+	private String parseCMD(HttpServletRequest request, HttpServletResponse response) {
+		String cmd = null;
+		String hostIp1 = request.getParameter("hostIp1");
+		String port1 = request.getParameter("port1");
+		String target1 = request.getParameter("target1");
+		String hostIp2 = request.getParameter("hostIp2");
+		String port2 = request.getParameter("port2");
+		String target2 = request.getParameter("target2");
+		String overwrite = request.getParameter("overwrite");
+		if(overwrite!=null && overwrite.equals("1"))
+		{
+			cmd =String.format("hadoop distcp -overwrite hdfs://%s:%s%s hdfs://%s:%s%s", hostIp1,port1,target1,hostIp2,port2,target2);
 		}
-		cmd.delete(cmd.length()-Constants.SPLIT_SYMBOL.length(), cmd.length());//去除最后一个分隔符
-		return cmd.toString();
+		else {
+			cmd =String.format("hadoop distcp hdfs://%s:%s%s hdfs://%s:%s%s", hostIp1,port1,target1,hostIp2,port2,target2);
+		}
+		return cmd;
 	}
 
 	/**

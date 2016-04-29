@@ -1,40 +1,19 @@
 package servlet;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import model.Job;
-import model.SavedJob;
-
-import org.apache.sqoop.Sqoop;
-import org.apache.sqoop.tool.JobTool;
-
 import util.JdbcUtil;
-import util.util;
-
-import com.cloudera.sqoop.SqoopOptions;
-import com.cloudera.sqoop.tool.SqoopTool;
-
 import java.sql.Connection;    
 import java.sql.ResultSet;  
 import java.sql.SQLException;  
 import java.sql.Statement;  
+
 
 public class jobHistoryListServlet extends HttpServlet {
 

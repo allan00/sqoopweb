@@ -1,37 +1,20 @@
 package servlet;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import model.SavedJob;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.sqoop.Sqoop;
-import org.apache.sqoop.tool.JobTool;
-
 import util.Constants;
 import util.JdbcUtil;
 import util.util;
-
-import com.cloudera.sqoop.SqoopOptions;
-import com.cloudera.sqoop.tool.SqoopTool;
-
 import java.sql.Connection;    
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;  
@@ -83,12 +66,13 @@ public class execSavedJobServlet extends HttpServlet {
 		String cmd = _CMD+" >"+request.getRealPath("")+Constants.LOG_DIR+"/"+logFileName+" 2>&1";
 		try {
 			con = JdbcUtil.getConn();
-			String sql = "insert into SQOOP_JOB(jobName,startTime,logFileName,state,type) values(?,?,?,?,0)";
+			String sql = "insert into SQOOP_JOB(jobName,startTime,logFileName,state,type) values(?,?,?,?,?)";
 			ps = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, name);
 			ps.setTimestamp(2, startTime);
 			ps.setString(3, logFileName);
 			ps.setInt(4, 0);
+			ps.setInt(5, Constants.SYSTEM_JOB);
 			int i = ps.executeUpdate();
 			
 			rs = ps.getGeneratedKeys();
@@ -111,7 +95,7 @@ public class execSavedJobServlet extends HttpServlet {
 		try {
 			client = new Socket("127.0.0.1",20005);
 			client.setSoTimeout(10000);
-			String info= String.format("id:{%d},type:{0},logFileName:{%s},cmd:{%s}", generate_id,logFileName,cmd);
+			String info= String.format("id:{%d},type:{%d},logFileName:{%s},cmd:{%s}", generate_id,Constants.SYSTEM_JOB,logFileName,cmd);
 			sendInfo(client,info);
 			Thread.sleep(100L);
 			info = receiveInfo(client);

@@ -42,7 +42,7 @@ public class ServerThread extends Thread {
 				String logFileName = parseLogFileName(info);
 				String cmd = parseCMD(info);
 				info = "command valid,executing cmd";
-				LOG.debug("id="+id+",logFileName="+logFileName+"cmd="+cmd);
+				LOG.debug("id="+id+",logFileName="+logFileName+",cmd="+cmd);
 				sendInfo(client, info);
 
 				exec(id,type, logFileName, cmd);
@@ -84,7 +84,10 @@ public class ServerThread extends Thread {
 				p.destroy();
 			}
 			case 2:{//多源导入作业
-				
+				String[] linuxCMD = { "/bin/sh", "-c", cmd };
+				p = rt.exec(linuxCMD);
+				exitValue = p.waitFor();
+				p.destroy();
 			}
 			case 3:{		//导出作业
 				String[] linuxCMD = { "/bin/sh", "-c", cmd };
@@ -112,7 +115,13 @@ public class ServerThread extends Thread {
 
 		Timestamp endTime = new Timestamp(System.currentTimeMillis());
 		File logFile = new File(realPath + Constants.LOG_DIR + "/" + logFileName);
-		int state = util.parseIsSuccess(logFile);
+		int state = -1;
+		if(logFile.exists()){
+		state = util.parseIsSuccess(logFile);
+		}
+		else{
+			state = 2;
+		}
 		try {
 			String sql = "update SQOOP_JOB set endTime=?,state = ? where id=?";
 			con = JdbcUtil.getConn();
@@ -138,6 +147,7 @@ public class ServerThread extends Thread {
 	private static int parseId(String info) {
 		int start = info.indexOf("id:{") + 4;
 		int end = info.indexOf("},type:");
+		LOG.info("start="+start+",end="+end);
 		int id = Integer.valueOf(info.substring(start, end));
 		return id;
 	}

@@ -4,14 +4,35 @@
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 	String message = request.getParameter("message");
-	String DBType = request.getParameter("DBType");
-	String hostIp = request.getParameter("hostIp");
-	String port = request.getParameter("port");
-	String DBUser = request.getParameter("DBUser");
-	String DBPassword = request.getParameter("DBPassword");
-	String schema = request.getParameter("schema");
-	String tableName = request.getParameter("tableName");
-	String where = request.getParameter("where");
+	
+	String count = request.getParameter("count");
+	String DBType1 = request.getParameter("DBType1");
+	String hostIp1 = request.getParameter("hostIp1");
+	String port1 = request.getParameter("port1");
+	String DBUser1 = request.getParameter("DBUser1");
+	String DBPassword1 = request.getParameter("DBPassword1");
+	String schema1 = request.getParameter("schema1");
+	String tableName1 = request.getParameter("tableName1");
+	String where1 = request.getParameter("where1");
+	
+	String DBType2 = request.getParameter("DBType2");
+	String hostIp2 = request.getParameter("hostIp2");
+	String port2 = request.getParameter("port2");
+	String DBUser2 = request.getParameter("DBUser2");
+	String DBPassword2 = request.getParameter("DBPassword2");
+	String schema2 = request.getParameter("schema2");
+	String tableName2 = request.getParameter("tableName2");
+	String where2 = request.getParameter("where2");
+	
+	String DBType3 = request.getParameter("DBType3");
+	String hostIp3 = request.getParameter("hostIp3");
+	String port3 = request.getParameter("port3");
+	String DBUser3 = request.getParameter("DBUser3");
+	String DBPassword3 = request.getParameter("DBPassword3");
+	String schema3 = request.getParameter("schema3");
+	String tableName3 = request.getParameter("tableName3");
+	String where3 = request.getParameter("where3");
+
 	String target = request.getParameter("target");
 	String columnSplit = request.getParameter("columnSplit");
 	String rowSplit = request.getParameter("rowSplit");
@@ -66,47 +87,77 @@
 		<div id="contentBox">
 		<h3>新建多源导入作业</h3>
 			<center>
-				<form id="importForm" name="importForm" action="<%=path%>/jobExec" method="post">
-					<table align="center" style="width: 35%; margin: auto">
-						<label hidden="true"><strong>导入源选项：</strong></label>
-						<label hidden="true">数据库类型：</label>
-						<input type="text" id="DBType" name="DBType" value="<%=DBType%>"
-							hidden="true" />
-						<label hidden="true">主机ip:</label>
-						<input type="text" id="hostIp" name="hostIp" value="<%=hostIp%>"
-							hidden="true" />
-						<label hidden="true">端口号：</label>
-						<input type="text" id="port" name="port" value="<%=port%>"
-							hidden="true" />
-						<label hidden="true">用户名：</label>
-						<input type="text" id="DBUser" name="DBUser" value="<%=DBUser%>"
-							hidden="true" />
-						<label hidden="true">密码：</label>
-						<input type="password" id="DBPassword" name="DBPassword"
-							value="<%=DBPassword%>" hidden="true" />
-						<label hidden="true">数据库名：</label>
-						<input type="text" id="schema" name="schema" value="<%=schema%>"
-							hidden="true" />
-						<label hidden="true">表名：</label>
-						<input type="text" id="tableName" name="tableName"
-							value="<%=tableName%>" hidden="true" />
-						<label hidden="true">where条件</label>
-						<input type="text" id="where" name="where" value="<%=where%>"
-							hidden="true" />
-
-						<label hidden="true"><strong>二、导入目的选项</strong></label>
-						<label hidden="true">导入位置：</label>
-						<input type="text" id="target" name="target" hidden="true" />
-						<label hidden="true">列分隔符：</label>
-						<input type="text" id="columnSplit" name="columnSplit"
-							hidden="true" />
-						<label hidden="true">行分隔符：</label>
-						<input type="text" id="rowSplit" name="rowSplit" hidden="true" />
-						<label hidden="true"><strong>其他</strong></label>
-						<label hidden="true">是否增量导入：</label>
-						<input hidden="true" type="text" name="isIncremental"
-							value="<%=isIncremental%>" />
-							
+				<form id="importForm" name="importForm" action="<%=path%>/execImportMulti" method="post">
+				<input type="text" id="count" name="count" value="<%=count%>" hidden="true"/>
+				
+				<div id="source1" name="source1" class="source" style="border:dotted 1px grey;" hidden="true">
+      <table align="center" style="width:240px;" >
+       <tr><td><strong>导入源(1)：</strong></td></tr>
+       <tr><td></td></tr>
+       <tr><td>数据库类型：</td><td><input type="text" id="DBType1" name="DBType1" value="<%=DBType1%>"/></td></tr>
+       <tr><td>主机ip:</td><td><input type="text" id="hostIp1" name="hostIp1" value="<%=hostIp1%>"/></td></tr>
+       <tr><td>端口号：</td><td><input type="text" id="port1" name="port1" value="<%=port1%>"/></td></tr>
+		<tr><td>用户名：</td><td><input type="text" id="DBUser1" name="DBUser1" value="<%=DBUser1%>"/></td></tr>
+		<tr><td>密码：</td><td><input type="password" id="DBPassword1" name="DBPassword1" value="<%=DBPassword1%>"/></td></tr>
+		<tr><td>数据库名：</td><td><input type="text" id="schema1" name="schema1" value="<%=schema1%>"/></td></tr>
+		<tr><td>表名：</td><td><input type="text" id="tableName1" name="tableName1" value="<%=tableName1%>"/></td></tr>
+		<tr><td>where条件</td><td><input type="text" id="where1" name="where1" value="<%=where1%>"/></td></tr>
+		</table></br>
+		</div>
+		<div id="source2" name="source2" class="source" style="border:dotted 1px grey;" hidden="true">
+      <table align="center" style="width:240px;">
+       <tr><td><strong>导入源(2)：</strong></td></tr>
+       <tr><td></td></tr>
+       <tr><td>数据库类型：</td><td><input type="text" id="DBType2" name="DBType2" value="<%=DBType2%>"/></td></tr>
+       <tr><td>主机ip:</td><td><input type="text" id="hostIp2" name="hostIp2" value="<%=hostIp2%>"/></td></tr>
+       <tr><td>端口号：</td><td><input type="text" id="port2" name="port2" value="<%=port2%>"/></td></tr>
+		<tr><td>用户名：</td><td><input type="text" id="DBUser2" name="DBUser2" value="<%=DBUser2%>"/></td></tr>
+		<tr><td>密码：</td><td><input type="password" id="DBPassword2" name="DBPassword2" value="<%=DBPassword2%>"/></td></tr>
+		<tr><td>数据库名：</td><td><input type="text" id="schema2" name="schema2" value="<%=schema2%>"/></td></tr>
+		<tr><td>表名：</td><td><input type="text" id="tableName2" name="tableName2" value="<%=tableName2%>"/></td></tr>
+		<tr><td>where条件</td><td><input type="text" id="where2" name="where2" value="<%=where2%>"/></td></tr>
+		</table></br>
+		</div>
+		<div id="source3" name="source3" class="source" style="border:dotted 1px grey;" hidden="true">
+      <table align="center" style="width:240px;">
+       <tr><td><strong>导入源(3)：</strong></td></tr>
+       <tr><td></td></tr>
+       <tr><td>数据库类型：</td><td><input type="text" id="DBType3" name="DBType3" value="<%=DBType3%>"/></td></tr>
+       <tr><td>主机ip:</td><td><input type="text" id="hostIp3" name="hostIp3" value="<%=hostIp3%>"/></td></tr>
+       <tr><td>端口号：</td><td><input type="text" id="port3" name="port3" value="<%=port3%>"/></td></tr>
+		<tr><td>用户名：</td><td><input type="text" id="DBUser3" name="DBUser3" value="<%=DBUser3%>"/></td></tr>
+		<tr><td>密码：</td><td><input type="password" id="DBPassword3" name="DBPassword3" value="<%=DBPassword3%>"/></td></tr>
+		<tr><td>数据库名：</td><td><input type="text" id="schema3" name="schema3" value="<%=schema3%>"/></td></tr>
+		<tr><td>表名：</td><td><input type="text" id="tableName3" name="tableName3" value="<%=tableName3%>"/></td></tr>
+		<tr><td>where条件</td><td><input type="text" id="where3" name="where3" value="<%=where3%>"/></td></tr>
+		</table></br>
+		</div>
+				<table align="center" style="width: 35%; margin: auto" hidden="true">
+						<tr>
+							<td><strong>二、导入目的选项</strong></td>
+						</tr>
+						<tr>
+							<td></br></td>
+						</tr>
+						<tr>
+							<td>导入位置：<input type="text" id="target" name="target" value="<%=target%>"/></td>
+						</tr>
+						<tr>
+							<td>列分隔符：<input type="text" id="columnSplit" name="columnSplit" value="<%=columnSplit%>"/></td>
+						</tr>
+						<tr>
+							<td>行分隔符：<input type="text" id="rowSplit" name="rowSplit" value="<%=rowSplit%>"/></td>
+						</tr>
+						<tr>
+							<td></br>
+							<strong>其他</strong></td>
+						</tr>
+						<tr>
+							<td>是否增量导入：<input type="text" id="isIncremental" name="isIncremental" value="<%=isIncremental%>"/>
+							</td>
+						</tr>
+					</table>
+					<table align="center" style="width: 35%; margin: auto">				
 						<tr>
 							<td><strong>三、作业执行</strong></td>
 						</tr>
@@ -164,7 +215,7 @@ function save_submit(){
 	}
 		
 	var importForm = document.getElementById("importForm");
-	importForm.action="<%=path%>/jobSaveAndExec";
+	importForm.action="<%=path%>/saveAndExecImportMulti";
 	importForm.submit();
 }
 </script>

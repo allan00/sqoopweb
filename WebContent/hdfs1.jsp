@@ -55,7 +55,7 @@ String message = request.getParameter("message");
       <h3>HDFS数据迁移</h3>
       <center>
     
-      <form action="<%=path %>/jobExec" method="post">
+      <form action="<%=path %>/execHDFSTransfer" method="post">
       <table align="center" style="width: 35%;margin:auto">
        <tr><td><strong>一、导入源选项：</strong></td></tr>
        <tr><td></td></tr>

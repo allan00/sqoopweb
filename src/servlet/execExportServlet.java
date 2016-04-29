@@ -26,9 +26,9 @@ import java.sql.SQLException;
 import java.sql.Statement;  
 import java.sql.Timestamp;
 
-public class execImportMultiServlet extends HttpServlet {
-	public static final Log LOG = LogFactory.getLog(execImportMultiServlet.class.getName());
-	public execImportMultiServlet() {
+public class execExportServlet extends HttpServlet {
+	public static final Log LOG = LogFactory.getLog(execExportServlet.class.getName());
+	public execExportServlet() {
 		super();
 	}
 
@@ -55,7 +55,8 @@ public class execImportMultiServlet extends HttpServlet {
 	public void exec(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 		String jobName = util.returnDate()+"job";
 		String logFileName = jobName+".log";
-		String cmd = parseCMD(request,response,logFileName);
+		String _CMD = parseCMD(request,response);
+		String cmd = _CMD+" >"+request.getRealPath("")+Constants.LOG_DIR+"/"+logFileName+" 2>&1";
 		PreparedStatement ps = null;
 		Connection con = null;
 		ResultSet rs = null;
@@ -69,8 +70,9 @@ public class execImportMultiServlet extends HttpServlet {
 			ps.setString(1, jobName);
 			ps.setTimestamp(2, startTime);
 			ps.setString(3, logFileName);
-			ps.setInt(4, 0);
-			ps.setInt(5, Constants.IMPORT_MULTI); 
+			ps.setInt(4, 0); 
+			ps.setInt(5, Constants.EXPORT);
+			
 			int i = ps.executeUpdate();
 			
 			rs = ps.getGeneratedKeys();
@@ -93,7 +95,7 @@ public class execImportMultiServlet extends HttpServlet {
 		try {
 			client = new Socket("127.0.0.1",20005);
 			client.setSoTimeout(10000);
-			String info= String.format("id:{%d},type:{%d},logFileName:{%s},cmd:{%s}", generate_id,Constants.IMPORT_MULTI,logFileName,cmd);
+			String info= String.format("id:{%d},type:{%d},logFileName:{%s},cmd:{%s}", generate_id,Constants.EXPORT,logFileName,cmd);
 			sendInfo(client,info);
 			Thread.sleep(100L);
 			info = receiveInfo(client);
@@ -126,28 +128,22 @@ public class execImportMultiServlet extends HttpServlet {
 		
 	}
 
-	private String parseCMD(HttpServletRequest request, HttpServletResponse response,String logFileName) {
-		StringBuilder cmd = new StringBuilder();
-		int count = Integer.valueOf(request.getParameter("count"));
-		for(int i=1;i<=count;i++ ){
-		String target = request.getParameter("target"+i);
-		String columnSplit = request.getParameter("columnSplit"+i);
-		String rowSplit = request.getParameter("rowSplit"+i);
+	private String parseCMD(HttpServletRequest request, HttpServletResponse response) {
+		String cmd = null;
+		String target = request.getParameter("target");
+		String columnSplit = request.getParameter("columnSplit");
+		String rowSplit = request.getParameter("rowSplit");
+		String DBType = request.getParameter("DBType");
+		String hostIp = request.getParameter("hostIp");
+		String port = request.getParameter("port");
+		String DBUser = request.getParameter("DBUser");
+		String DBPassword = request.getParameter("DBPassword");
+		String schema = request.getParameter("schema");
+		String tableName = request.getParameter("tableName");
+		String where = request.getParameter("where");
 		
-		String DBType = request.getParameter("DBType"+i);
-		String hostIp = request.getParameter("hostIp"+i);
-		String port = request.getParameter("port"+i);
-		String DBUser = request.getParameter("DBUser"+i);
-		String DBPassword = request.getParameter("DBPassword"+i);
-		String schema = request.getParameter("schema"+i);
-		String tableName = request.getParameter("tableName"+i);
-		String where = request.getParameter("where"+i);
-		String l = request.getRealPath("")+Constants.LOG_DIR+"/"+logFileName;
-		String str = String.format("sqoop import --append --direct  --connect jdbc:%s://%s:%s/%s --username %s --password %s --table %s >%s 2>&1"+Constants.SPLIT_SYMBOL, DBType,hostIp,port,schema,DBUser,DBPassword,tableName,l); 
-		cmd.append(str);
-		}
-		cmd.delete(cmd.length()-Constants.SPLIT_SYMBOL.length(), cmd.length());//去除最后一个分隔符
-		return cmd.toString();
+		cmd =String.format("sqoop export --connect jdbc:%s://%s:%s/%s --username %s --password %s --table %s --export-dir %s", DBType,hostIp,port,schema,DBUser,DBPassword,tableName,target);
+		return cmd;
 	}
 
 	/**
