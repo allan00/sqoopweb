@@ -11,7 +11,11 @@ import java.util.concurrent.Executors;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class SqoopCMDListener implements ServletContextListener {
+	public static final Log LOG = LogFactory.getLog(SqoopCMDListener.class.getName());
 	private static final ExecutorService es = Executors.newCachedThreadPool(); 
 	 @Override
 	 public void contextDestroyed(ServletContextEvent event) {
@@ -39,7 +43,7 @@ public class SqoopCMDListener implements ServletContextListener {
 	
 	public void listenSqoopCMD(String realPath) throws Exception{
 		//服务端在20006端口监听客户端请求的TCP连接
-		System.out.println(realPath);
+		LOG.debug(realPath);
 		ServerSocket server = new ServerSocket(20005);
 		Socket client = null;
 		boolean f = true;

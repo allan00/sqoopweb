@@ -25,14 +25,7 @@ public class ServerThread extends Thread {
 	private Socket client = null;
 	public String realPath = null;
 
-	private final int MAPS = 4;
-	File workDirectory = null;
-	File basis = null;
-	File sigFile = null;
-	File[] delta = new File[MAPS];
-	File deltaTotalFile = null;
-
-	public ServerThread(Socket client,String realPath) {
+	public ServerThread(Socket client, String realPath) {
 		this.client = client;
 		this.realPath = realPath;
 	}
@@ -42,17 +35,17 @@ public class ServerThread extends Thread {
 		try {
 			String info = "";
 			info = receiveInfo(client);
-			if(validateCMD(info)){
-			int id = parseId(info);
-			String logFileName = parseLogFileName(info);
-			String cmd = parseCMD(info);
-			info = "command valid,executing cmd";
-			sendInfo(client, info);
-			
-			exec(id,logFileName,cmd);
-			
-			}
-			else{
+			if (validateCMD(info)) {
+				int id = parseId(info);
+				String logFileName = parseLogFileName(info);
+				String cmd = parseCMD(info);
+				info = "command valid,executing cmd";
+				LOG.debug("id="+id+",logFileName="+logFileName+"cmd="+cmd);
+				sendInfo(client, info);
+
+				exec(id, logFileName, cmd);
+
+			} else {
 				info = "command invalid,connection closed";
 				sendInfo(client, info);
 			}
@@ -76,40 +69,39 @@ public class ServerThread extends Thread {
 		Runtime rt = Runtime.getRuntime();
 		int exitValue = 1;
 		try {
-			String logDir = realPath+Constants.LOG_DIR;
+			String logDir = realPath + Constants.LOG_DIR;
 			File logpath = new File(logDir);
 			if (!logpath.exists()) {
 				logpath.mkdirs();
 			}
-			String[] linuxCMD = {"/bin/sh","-c",cmd};
+			String[] linuxCMD = { "/bin/sh", "-c", cmd };
 			p = rt.exec(linuxCMD);
 			exitValue = p.waitFor();
 			p.destroy();
-			
-//			System.out.println(exitValue);
+
+			// System.out.println(exitValue);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception e1) {
 			e1.printStackTrace();
+		} finally {
 		}
-		finally{
-		}
-		
+
 		Timestamp endTime = new Timestamp(System.currentTimeMillis());
-		File logFile = new File(realPath+Constants.LOG_DIR+"/"+logFileName);
+		File logFile = new File(realPath + Constants.LOG_DIR + "/" + logFileName);
 		int state = util.parseIsSuccess(logFile);
 		try {
 			String sql = "update SQOOP_JOB set endTime=?,state = ? where id=?";
+			con = JdbcUtil.getConn();
 			ps = con.prepareStatement(sql);
 			ps.setTimestamp(1, endTime);
 			ps.setInt(2, state);
 			ps.setLong(3, id);
-			ps.executeUpdate();		
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		finally{
+		} finally {
 			JdbcUtil.close(null, ps);
 			JdbcUtil.closeConnection(con);
 		}
@@ -126,16 +118,18 @@ public class ServerThread extends Thread {
 		int id = Integer.valueOf(info.substring(start, end));
 		return id;
 	}
+
 	private static String parseLogFileName(String info) {
 		int start = info.indexOf("logFileName:{") + 13;
 		int end = info.indexOf("},cmd:{");
 		String logFileName = info.substring(start, end);
 		return logFileName;
 	}
+
 	private static String parseCMD(String info) {
 		int start = info.indexOf("cmd:{") + 5;
 		int end = info.length();
-		String cmd = info.substring(start, end);
+		String cmd = info.substring(start, end-1);
 		return cmd;
 	}
 

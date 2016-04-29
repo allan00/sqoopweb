@@ -75,8 +75,8 @@ public class execImportServlet extends HttpServlet {
 	public void exec(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
 		String jobName = util.returnDate()+"job";
 		String logFileName = jobName+".log";
-		String sqoopCMD = parseCMD(request,response);
-		String cmd = sqoopCMD+" >"+request.getRealPath("")+Constants.LOG_DIR+"/"+logFileName+" 2>&1";
+		String _CMD = parseCMD(request,response);
+		String cmd = _CMD+" >"+request.getRealPath("")+Constants.LOG_DIR+"/"+logFileName+" 2>&1";
 		PreparedStatement ps = null;
 		Connection con = null;
 		ResultSet rs = null;
@@ -85,7 +85,7 @@ public class execImportServlet extends HttpServlet {
 		
 		try {
 			con = JdbcUtil.getConn();
-			String sql = "insert into SQOOP_JOB(jobName,startTime,logFileName,state) values(?,?,?,?)";
+			String sql = "insert into SQOOP_JOB(jobName,startTime,logFileName,state,type) values(?,?,?,?,1)";
 			ps = con.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
 			ps.setString(1, jobName);
 			ps.setTimestamp(2, startTime);
@@ -104,7 +104,7 @@ public class execImportServlet extends HttpServlet {
 			JdbcUtil.close(rs, ps);
 		}
 		request.getRequestDispatcher("/runningJobList").forward(request, response);
-		commitCMD(generate_id,logFileName,cmd);
+		commitCMD(generate_id,logFileName,cmd);//把任务提交给服务器
 		return;
 	}
 
