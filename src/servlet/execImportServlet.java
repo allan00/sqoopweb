@@ -95,6 +95,7 @@ public class execImportServlet extends HttpServlet {
 			Thread.sleep(100L);
 			info = receiveInfo(client);
 			if (!("command valid,executing cmd").equals(info)) {
+				System.out.println(info);
 					throw new Exception(info);
 			}
 			

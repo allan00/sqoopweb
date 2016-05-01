@@ -34,7 +34,7 @@ public class ServerThread extends Thread {
 	@Override
 	public void run() {
 		try {
-			String info = "";
+			String info = null;
 			info = receiveInfo(client);
 			if (validateCMD(info)) {
 				int id = parseId(info);
@@ -42,10 +42,10 @@ public class ServerThread extends Thread {
 				String logFileName = parseLogFileName(info);
 				String cmd = parseCMD(info);
 				info = "command valid,executing cmd";
-				LOG.debug("id="+id+",logFileName="+logFileName+",cmd="+cmd);
+				LOG.debug("id=" + id + ",logFileName=" + logFileName + ",cmd=" + cmd);
 				sendInfo(client, info);
 
-				exec(id,type, logFileName, cmd);
+				exec(id, type, logFileName, cmd);
 
 			} else {
 				info = "command invalid,connection closed";
@@ -64,7 +64,7 @@ public class ServerThread extends Thread {
 		}
 	}
 
-	private void exec(int id, int type,String logFileName, String cmd) {
+	private void exec(int id, int type, String logFileName, String cmd) {
 		PreparedStatement ps = null;
 		Connection con = null;
 		Process p = null;
@@ -76,34 +76,43 @@ public class ServerThread extends Thread {
 			if (!logpath.exists()) {
 				logpath.mkdirs();
 			}
-			switch(type){
-			case 1:{		//单源导入作业
+			switch (type) {
+			case 1: { // 单源导入作业
 				String[] linuxCMD = { "/bin/sh", "-c", cmd };
 				p = rt.exec(linuxCMD);
 				exitValue = p.waitFor();
 				p.destroy();
+				break;
 			}
-			case 2:{//多源导入作业
+			case 2: {// 多源导入作业
+				String[] cmds = cmd.split(Constants.SPLIT_SYMBOL_REGEX);
+				//依次执行作业
+				for (int i=0;i<cmds.length;i++) {
+					String[] linuxCMD = { "/bin/sh", "-c", cmds[i]+" >"+realPath+Constants.LOG_DIR+"/"+logFileName+" 2>&1" };
+					System.out.println(linuxCMD[2]);
+					p = rt.exec(linuxCMD);
+					exitValue = p.waitFor();
+				}
+				p.destroy();
+				break;
+			}
+			case 3: { // 导出作业
 				String[] linuxCMD = { "/bin/sh", "-c", cmd };
 				p = rt.exec(linuxCMD);
 				exitValue = p.waitFor();
 				p.destroy();
+				break;
 			}
-			case 3:{		//导出作业
+
+			case 4: { // HDFS迁移作业
 				String[] linuxCMD = { "/bin/sh", "-c", cmd };
 				p = rt.exec(linuxCMD);
 				exitValue = p.waitFor();
 				p.destroy();
+				break;
 			}
-			
-			case 4:{		//HDFS迁移作业
-				String[] linuxCMD = { "/bin/sh", "-c", cmd };
-				p = rt.exec(linuxCMD);
-				exitValue = p.waitFor();
-				p.destroy();
-			}
-			default:{
-				
+			default: {
+				break;
 			}
 			}
 		} catch (IOException e) {
@@ -116,10 +125,9 @@ public class ServerThread extends Thread {
 		Timestamp endTime = new Timestamp(System.currentTimeMillis());
 		File logFile = new File(realPath + Constants.LOG_DIR + "/" + logFileName);
 		int state = -1;
-		if(logFile.exists()){
-		state = util.parseIsSuccess(logFile);
-		}
-		else{
+		if (logFile.exists()) {
+			state = util.parseIsSuccess(logFile);
+		} else {
 			state = 2;
 		}
 		try {
@@ -143,15 +151,15 @@ public class ServerThread extends Thread {
 		// TODO Auto-generated method stub
 		return true;
 	}
-	
+
 	private static int parseId(String info) {
 		int start = info.indexOf("id:{") + 4;
 		int end = info.indexOf("},type:");
-		LOG.info("start="+start+",end="+end);
+		LOG.info("start=" + start + ",end=" + end);
 		int id = Integer.valueOf(info.substring(start, end));
 		return id;
 	}
-	
+
 	private static int parseType(String info) {
 		int start = info.indexOf("type:{") + 6;
 		int end = info.indexOf("},logFileName:");
@@ -169,7 +177,7 @@ public class ServerThread extends Thread {
 	private static String parseCMD(String info) {
 		int start = info.indexOf("cmd:{") + 5;
 		int end = info.length();
-		String cmd = info.substring(start, end-1);
+		String cmd = info.substring(start, end - 1);
 		return cmd;
 	}
 
