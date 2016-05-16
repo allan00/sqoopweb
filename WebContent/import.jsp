@@ -85,14 +85,6 @@ String message = request.getParameter("message");
     <div class="clear"> 
       <hr/>
     </div>
-    <div id="footer">
-      <div class="xright">&#169;            2016
-              South China Normal University
-            
-                       - <a href="http://maven.apache.org/privacy-policy.html">Privacy Policy</a></div>
-      <div class="clear">
-        <hr/>
-      </div>
-    </div>
+    <%@include file="/footer.jsp"%>
   </body>
 </html>
