@@ -54,28 +54,54 @@ String message = request.getParameter("message");
       <div id="contentBox">
         <!-- Licensed under the Apache License, Version 2.0 (the "License"); --><!-- you may not use this file except in compliance with the License. --><!-- You may obtain a copy of the License at --><!--  --><!-- http://www.apache.org/licenses/LICENSE-2.0 --><!--  --><!-- Unless required by applicable law or agreed to in writing, software --><!-- distributed under the License is distributed on an "AS IS" BASIS, --><!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. --><!-- See the License for the specific language governing permissions and --><!-- limitations under the License. See accompanying LICENSE file. --><div class="section">
 <h2>作业说明</h2>
-<p>Apache sqoop 2.6.0 is a minor release in the 2.x.y release line, building upon the previous stable release 2.4.1.</p>
-<p>Here is a short overview of the major features and improvements.</p>
 <ul>
-<li><a name="Common">Common</a>
+
+<li><strong>作业</strong></li></br>
+作业是系统中一次导入或导出的执行过程的总称。可以对作业进行新建、查看、终止和删除操作。</br>
+新建的作业可以分为：1、单源导入 &nbsp;&nbsp;&nbsp;2、多源导入&nbsp;&nbsp;&nbsp; 3、导出&nbsp;&nbsp;&nbsp;4、HDFS数据迁移</br>
+可以在作业状态中查看&nbsp;&nbsp;&nbsp;<a href="<%=path %>/runningJobList">运行中作业列表</a>&nbsp;&nbsp;&nbsp;、<a href="<%=path %>/jobHistoryList">作业历史列表</a>&nbsp;&nbsp;&nbsp;和&nbsp;&nbsp;&nbsp;<a href="<%=path %>/savedJobList">已保存的系统作业列表</a>。
+</br></br></br></br>
+
+<li><strong>单源导入</strong></li></br>
 <ul>
-<li>Authentication improvements when using an HTTP proxy server. This is useful when accessing WebHDFS via a proxy server.</li>
-<li>A new sqoop metrics sink that allows writing directly to Graphite.</li>
-<li><a href="./sqoop-project-dist/sqoop-common/filesystem/index.html">Specification work</a> related to the sqoop Compatible Filesystem (HCFS) effort.</li></ul></li>
-<li><a name="HDFS">HDFS</a>
+<li>将单一源的数据导入到大数据平台。当需要将数据从“一个”特定的关系型数据库导入到Hadoop平台时可以新建此作业。</li></br>
+<li>新建步骤如下（点击查看<a href="<%=path %>/importHelp.jsp">a.新建单源导入作业图文教程</a>）</li></br>
+<li>一、	选择导入源的关系数据库的参数。包括数据库类型（MySql、Oracle等）、主机ip地址、端口号、用户名、密码、数据库名、表名、筛选条件。</br>
+二、	选择数据导入到Hadoop平台的列分隔符、行分隔符以及目标位置。</br>
+三、	选择是否执行增量导入</br>
+四、	选择直接执行作业，或者将作业参数保存到系统中，以便下次直接执行此作业。</li>
+</ul></li></br></br></br></br>
+
+<li><strong>多源导入</strong></br>
 <ul>
-<li>Support for POSIX-style filesystem extended attributes. See the <a href="./sqoop-project-dist/sqoop-hdfs/ExtendedAttributes.html">user documentation</a> for more details.</li>
-<li>Using the OfflineImageViewer, clients can now browse an fsimage via the WebHDFS API.</li>
-<li>The NFS gateway received a number of supportability improvements and bug fixes. The sqoop portmapper is no longer required to run the gateway, and the gateway is now able to reject connections from unprivileged ports.</li>
-<li>The SecondaryNameNode, JournalNode, and DataNode web UIs have been modernized with HTML5 and Javascript.</li></ul></li>
-<li><a name="YARN">YARN</a>
+<li>将多个数据源的数据导入到大数据平台。当需要将数据从“多个”特定的关系型数据库导入到Hadoop平台时可以新建此作业。</li></br>
+<li>新建步骤如下（点击查看<a href="<%=path %>/importMultiHelp.jsp">b.新建多源导入作业图文教程</a>）</li></br>
+<li>一、	选择待导入的关系数据库的参数。包括数据库类型（MySql、Oracle等）、主机ip地址、端口号、用户名、密码、数据库名、表名、筛选条件，这些关系数据库可以选择“多个”。</br>
+二、	选择数据导入到Hadoop平台的列分隔符、行分隔符以及目标位置。</br>
+三、	选择直接执行作业，或者将作业参数保存到系统中，以便下次直接执行此作业。</br>
+</ul></li></br></br></br></br>
+
+<li><strong>导出</strong></br>
 <ul>
-<li>YARN's REST APIs now support write/modify operations. Users can submit and kill applications through REST APIs.</li>
-<li>The timeline store in YARN, used for storing generic and application-specific information for applications, supports authentication through Kerberos.</li>
-<li>The Fair Scheduler supports dynamic hierarchical user queues, user queues are created dynamically at runtime under any specified parent-queue.</li></ul></li></ul></div>
-<div class="section">
-<h2>Getting Started<a name="Getting_Started"></a></h2>
-<p>The sqoop documentation includes the information you need to get started using sqoop. Begin with the <a href="./sqoop-project-dist/sqoop-common/SingleCluster.html">Single Node Setup</a> which shows you how to set up a single-node sqoop installation. Then move on to the <a href="./sqoop-project-dist/sqoop-common/ClusterSetup.html">Cluster Setup</a> to learn how to set up a multi-node sqoop installation.</p></div>
+<li>将数据从大数据平台导出。当需要将数据从Hadoop平台导出到某个特定的关系型数据库时可以新建此作业。</li></br>
+<li>新建步骤如下（点击查看<a href="<%=path %>/exportHelp.jsp">c.新建导出作业图文教程</a>）</li></br>
+<li>一、	选择数据导出源的Hadoop平台的列分隔符、行分隔符以及目标位置。</br>
+二、	选择导出目的关系数据库的参数。包括数据库类型（MySql、Oracle等）、主机ip地址、端口号、用户名、密码、数据库名、表名。</br>
+三、	选择是否覆盖数据。</br>
+四、	选择直接执行作业，或者将作业参数保存到系统中，以便下次直接执行此作业。</br>
+</ul></li></br></br></br></br>
+
+<li><strong>HDFS数据迁移</strong></br>
+<ul>
+<li>将数据在大数据平台间迁移。当需要将数据从“一个”Hadoop集群迁移到“另一个”Hadoop集群时可以新建此作业。</li></br>
+<li>新建步骤如下（点击查看<a href="<%=path %>/HDFSTransferHelp.jsp">d.新建HDFS数据迁移作业图文教程</a>）</li></br>
+<li>一、	选择数据导出源的Hadoop平台的列分隔符、行分隔符以及目标位置。</br>
+二、	选择导出目的关系数据库的参数。包括数据库类型（MySql、Oracle等）、主机ip地址、端口号、用户名、密码、数据库名、表名。</br>
+三、	选择是否覆盖数据。</br>
+四、	选择直接执行作业，或者将作业参数保存到系统中，以便下次直接执行此作业。</br>
+</ul></li></br></br></br></br>
+
+</ul></div>
       </div>
     </div>
     <div class="clear">

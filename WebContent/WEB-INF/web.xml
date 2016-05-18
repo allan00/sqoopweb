@@ -7,6 +7,15 @@
 </listener>
   
   <servlet>
+		<servlet-name>indexInfo</servlet-name>
+		<servlet-class>servlet.indexInfoServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>indexInfo</servlet-name>
+		<url-pattern>/indexInfo</url-pattern>
+	</servlet-mapping>
+  
+  <servlet>
 		<servlet-name>savedJobList</servlet-name>
 		<servlet-class>servlet.savedJobListServlet</servlet-class>
 	</servlet>
@@ -129,6 +138,7 @@
 	<!-- HDFS Transfer end -->
 	
   <welcome-file-list>
+  	<welcome-file>/indexInfo</welcome-file>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
     <welcome-file>index.jsp</welcome-file>

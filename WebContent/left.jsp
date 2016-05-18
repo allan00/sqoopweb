@@ -21,7 +21,7 @@ String basePath1 = request.getScheme()+"://"+request.getServerName()+":"+request
   <body class="composite">
     <div id="leftColumn">
       <div id="navcolumn">
-             
+             <a href="<%=path1 %>/indexInfo"><h5>首页</h5></a>
                   <h5>新建作业</h5>
                   <ul>
                   <li class="none">
@@ -57,8 +57,8 @@ String basePath1 = request.getScheme()+"://"+request.getServerName()+":"+request
                   <li class="none">
                   <a href="<%=path1 %>/jobInstruction.jsp">作业说明</a>
             </li>
-                  <li class="none">
-                  <a href="<%=path1 %>/operationInstruction.jsp">操作说明</a>
+            <li class="none">
+                  <a href="<%=path1 %>/operationInstruction.jsp">操作教程</a>
             </li>
           </ul>
                                  <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
