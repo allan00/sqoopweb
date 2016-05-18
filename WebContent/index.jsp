@@ -57,10 +57,10 @@ String message = request.getParameter("message");
 <h3>系统状态预览</h3>
 <center>
 <table align="center" style="width: 35%;margin:auto">
-<tr><td>正在运行作业：</td><td><a href="<%=path1 %>/runningJobList">${runningNum }</a></td></tr>
-<tr><td>系统历史作业总数：</td><td><a href="<%=path1 %>/jobHistoryList">${historyNum }</a></td></tr>
-<tr><td>成功：</td><td>${success }</td></tr>
-<tr><td>失败：</td><td>${fail }</td></tr>
+<tr><td>正在运行作业：</td><td><a href="<%=path1 %>/runningJobList"><b>${runningNum }</b></a></td></tr>
+<tr><td>系统历史作业总数：</td><td><a href="<%=path1 %>/jobHistoryList"><b>${historyNum }</b></a></td></tr>
+<tr><td>成功：</td><td><b>${success }</b></td></tr>
+<tr><td>失败：</td><td><b>${fail }</b></td></tr>
 </table>
 </center>
 </div>
