@@ -3,7 +3,12 @@ package util;
 import java.io.File;
 
 public class Constants {
+	/*作业运行日志路径*/
 	public final static String LOG_DIR = "/joblog";
+	
+	/*SqoopCMDServer参数*/
+	public final static int SQOOPCMD_PORT = 20005;
+	
 	/*作业运行状态*/
 	public final static int RUNNING = 0;
 	public final static int SUCCESS = 1;

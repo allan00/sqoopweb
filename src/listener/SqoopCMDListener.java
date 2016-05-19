@@ -14,6 +14,9 @@ import javax.servlet.ServletContextListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import util.Constants;
+
+
 public class SqoopCMDListener implements ServletContextListener {
 	public static final Log LOG = LogFactory.getLog(SqoopCMDListener.class.getName());
 	private static final ExecutorService es = Executors.newCachedThreadPool(); 
@@ -42,9 +45,10 @@ public class SqoopCMDListener implements ServletContextListener {
 	 }
 	
 	public void listenSqoopCMD(String realPath) throws Exception{
-		//服务端在20006端口监听客户端请求的TCP连接
+		//服务端在20005端口监听客户端请求的TCP连接
 		LOG.debug(realPath);
-		ServerSocket server = new ServerSocket(20005);
+		int port = Constants.SQOOPCMD_PORT;
+		ServerSocket server = new ServerSocket(port);
 		Socket client = null;
 		boolean f = true;
 		while(f){

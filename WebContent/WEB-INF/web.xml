@@ -138,7 +138,7 @@
 	<!-- HDFS Transfer end -->
 	
   <welcome-file-list>
-  	<welcome-file>/indexInfo</welcome-file>
+  	<welcome-file>indexInfo</welcome-file>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
     <welcome-file>index.jsp</welcome-file>
